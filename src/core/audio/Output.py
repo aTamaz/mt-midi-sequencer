@@ -83,7 +83,7 @@ class Output(threading.Thread): # Output runs in its own Thread
 		BUFFER_SIZE = 5024
 
 		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		s.connect((TCP_IP, TCP_PORT))
+		#s.connect((TCP_IP, TCP_PORT))
 
 
 
@@ -99,11 +99,11 @@ class Output(threading.Thread): # Output runs in its own Thread
 
 				# hier die netzwerkschnittstelle reinhauen
 
-				print 'sending'
-				s.send(playdata)
+				#print 'sending'
+				#s.send(playdata)
 				#s.send('ugh')
 
-				#self.play(playdata)
+				self.play(playdata)
 
 
 
