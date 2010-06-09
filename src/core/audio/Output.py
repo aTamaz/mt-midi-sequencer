@@ -74,19 +74,25 @@ class Output(threading.Thread): # Output runs in its own Thread
 			print 'Output:\t\t' + msg
 
 	def run(self):
-		oldtime=pygame.time.get_ticks()
-
+		
+		# constants
+		DELIMITER = '<*>'
 
 		# network connection setup
 		TCP_IP = '127.0.0.1'
 		TCP_PORT = 5005
 		BUFFER_SIZE = 5024
 
-		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		#s.connect((TCP_IP, TCP_PORT))
+		self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		self.s.connect((TCP_IP, TCP_PORT))
 
-
-
+		# sleep and wait for tcp connection successfull
+		# if i omitted this, the synch signal doesn't get to the server 
+		time.sleep(0.5)
+			
+		# send synch
+		self.s.send(DELIMITER+'<synch>'+DELIMITER+str(pygame.midi.time()))
+		print pygame.midi.time()
 
 
 		while 1:
@@ -95,20 +101,7 @@ class Output(threading.Thread): # Output runs in its own Thread
 			playdata = queue.get()
 			self.__log('got music data to play')
 			if(playdata!=None):
-
-
-				# hier die netzwerkschnittstelle reinhauen
-
-				#print 'sending'
-				#s.send(playdata)
-				#s.send('ugh')
-
 				self.play(playdata)
-
-
-
-
-
 			queue.task_done()
 
 			# kein warten mehr noetig weil synch ueber timestamp geht
@@ -118,7 +111,7 @@ class Output(threading.Thread): # Output runs in its own Thread
 
 
 		# close network connection
-		s.close()
+		self.s.close()
 
 	def play(self, playdata):
 		if(playdata==[]):
@@ -130,11 +123,15 @@ class Output(threading.Thread): # Output runs in its own Thread
 		else:
 			self.__timestamp=self.__timestamp+self.__ticktime
 
+		'''DEBUG'''
+		self.__timestamp=self.__ticktime
+		
+		
 		# constants for MIDI Status
 		ON = 1		# note on
 		OFF = 0		# note off
 
-
+		print 'timestamp: '+str(self.__timestamp)
 
 
 		# send midi data
@@ -151,13 +148,22 @@ class Output(threading.Thread): # Output runs in its own Thread
 				#self.midi_out.write([[[status_change,instrument],self.__timestamp]])
 				self.__lastInstrument=instrument
 
+			
+			# constants
+			DELIMITER = '<*>'		
+
+
 			if status == ON:
 				status_on = 144+channel
-				self.midi_out.write([[[status_on,note,velocity],self.__timestamp]])
+				#self.midi_out.write([[[status_on,note,velocity],self.__timestamp]])
+				self.s.send(DELIMITER+str(status_on)+DELIMITER+str(note)+DELIMITER+str(velocity)+DELIMITER+str(self.__timestamp)+DELIMITER)
+				print DELIMITER+str(status_on)+DELIMITER+str(note)+DELIMITER+str(velocity)+DELIMITER+str(self.__timestamp)+DELIMITER
 				self.__log('\tnote on>\t' + str(note)) #LOG
 			elif status == OFF:
 				status_off = 128+channel
 				#self.midi_out.write([[[status_off,note,velocity],self.__timestamp]])
+				self.s.send(DELIMITER+str(status_off)+DELIMITER+str(note)+DELIMITER+str(velocity)+DELIMITER+str(self.__timestamp)+DELIMITER)
+				print DELIMITER+str(status_off)+DELIMITER+str(note)+DELIMITER+str(velocity)+DELIMITER+str(self.__timestamp)+DELIMITER
 				self.__log('\t< note off\t' + str(note)) # LOG
 
 			#self.__log('played notes: ' + str(self.__on_notes)) # LOG
