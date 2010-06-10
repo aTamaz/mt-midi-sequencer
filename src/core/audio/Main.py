@@ -1,11 +1,6 @@
-
-#import pygame
-#import pygame.midi
-
 import Sequence
 import EventManager
-#import StartHelper
-import helloworld
+
 
 
 # cmd /K "cd C:\Users\Bao\Desktop\Studium\6. Sem SoSe 10\Multitouch Sequencer\repository\tim\midisequencer\MidiOutput+Event && python Main.py"
@@ -45,8 +40,12 @@ if __name__ == '__main__':
 
 
 
-
-	helloworld.go()
+	import gui.temp.helloworld
+	gui.temp.helloworld.setBpmHandler(manager.setBPM)
+	gui.temp.helloworld.go()
+	
+	#import gui.temp.Anim9
+	
 	#StartHelper().start()
 
 	# if this terminates, program will terminate

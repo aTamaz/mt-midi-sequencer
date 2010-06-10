@@ -1,6 +1,6 @@
 import threading
 
-import helloworld
+
 
 class StartHelper(threading.Thread): # EventWorker runs in its own Thread
 
@@ -12,8 +12,7 @@ class StartHelper(threading.Thread): # EventWorker runs in its own Thread
         threading.Thread.__init__(self)
 
     def run(self):
-        print 'SADASDASDASDASDASDASDASDASDAS'
-        helloworld.go()
+        import gui.temp.Anim9
 
 
 StartHelper().start()

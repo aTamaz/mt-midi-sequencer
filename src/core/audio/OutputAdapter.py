@@ -4,7 +4,7 @@ import time
 import threading
 import random
 import socket
-
+import core.Constants
 
 
 
@@ -31,21 +31,28 @@ class OutputAdapter(threading.Thread): # OutputAdapter runs in its own Thread
 		if self.manager==None:
 			raise Exception('OutputAdapter must be instantiated with an associated EventManager!')
 
-		self.__timestamp=0
-		self.__lastInstrument=-1
+		
 
 
 	def __del__(self):
 		del self.midi_out
 
 
-	''' sets ticktime (in miliseconds) -> speed '''
-	def setTickTime(self, time):
-		self.__ticktime=time
+
 
 	''' set speed in BPM = bits per minute '''
 	def setBPM(self,bpm):
-		self.__ticktime=16000/bpm	# 1/16 rhytm, 64 notes = 1 sequence length
+		#self.__ticktime=16000/bpm	# 1/16 rhytm, 64 notes = 1 sequence length
+		try:
+			self.s
+		except:
+			return
+		
+		self.__log('send setBPM Message')
+		delim = core.Constants.TCP_delimiter
+		setMsg = core.Constants.TCP_setBPM
+		self.s.send(delim+setMsg+delim+str(bpm)+delim)
+		
 
 	''' tunnel for log messages '''
 	def __log(self, msg):
@@ -53,14 +60,11 @@ class OutputAdapter(threading.Thread): # OutputAdapter runs in its own Thread
 			print 'OutputAdapter:\t\t' + msg
 
 	def run(self):
-		
-		# constants
-		DELIMITER = '<*>'
 
 		# network connection setup
-		TCP_IP = '127.0.0.1'
-		TCP_PORT = 5005
-		BUFFER_SIZE = 5024
+		TCP_IP = core.Constants.TCP_ip
+		TCP_PORT = core.Constants.TCP_port
+		BUFFER_SIZE = core.Constants.TCP_buffer_size
 
 		self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.s.connect((TCP_IP, TCP_PORT))
@@ -100,12 +104,12 @@ class OutputAdapter(threading.Thread): # OutputAdapter runs in its own Thread
 		'''
 		message format:
 		<tick-start><DELIMITER><event-start><DELIMITER><instrument><DELIMITER><channel><DELIMITER><note><DELIMITER><velocity><DELIMITER><status><DELIMITER><event-end><DELIMITER><event-start>...<event-end>...<DELIMITER><tick-end><DELIMITER>
-		'''
-		TCP_tick_start 	= '<tick-start>'
-		TCP_tick_end 	= '<tick-end'
-		TCP_event_start	= '<event-start>'
-		TCP_event_end	= '<event-end>'
-		TCP_delimiter 	= '<*>'
+		'''		
+		TCP_tick_start 	= core.Constants.TCP_tick_start
+		TCP_tick_end 	= core.Constants.TCP_tick_end
+		TCP_event_start	= core.Constants.TCP_event_start
+		TCP_event_end	= core.Constants.TCP_event_end
+		TCP_delimiter 	= core.Constants.TCP_delimiter		
 
 		# send begin of tick
 		self.s.send(TCP_tick_start+TCP_delimiter)

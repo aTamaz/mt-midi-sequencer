@@ -36,6 +36,12 @@ class MTScatterLabel(MTScatterWidget):
 
 ################################################################################
 
+bpmHandler = None
+
+def setBpmHandler(method):
+    global bpmHandler
+    bpmHandler = method
+
 def go():
     # root widget
     root = MTWidget()
@@ -64,10 +70,16 @@ def go():
     root.add_widget(btnLayout)
 
     # SLider einbauen fuer Schriftgroesse
-    slider = MTSlider(min=10, max=50, value=20, pos=(600,50))
+    slider = MTSlider(min=10, max=400, value=128, pos=(600,50))
     @slider.event
     def on_value_change(*largs):
         scatterLabel.setSize(slider.value)
+        scatterLabel.setText(slider.value)
+        try:
+            bpmHandler(slider.value)
+        except:
+            pass
+        
 
     root.add_widget(slider)
 
