@@ -18,13 +18,13 @@ if __name__ == '__main__':
 	print '============================================================'
 
 	# Options:
-	amount_sequences = 3
+	amount_sequences = 1
 	bpm=128
 	#bpm=200
 
 	# Logging On/Off
-	logging_sequences=0
-	logging_eventSystem=0
+	logging_sequences=1
+	logging_eventSystem=1
 
 	######################################################################
 	# edit options above.

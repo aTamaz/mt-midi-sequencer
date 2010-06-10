@@ -75,10 +75,14 @@ class MidiServer(threading.Thread):
 			playdata = []
 			
 			''' step 0) request data '''
-			conn.send('ugh')
-			
+			list = []			
+			while(len(list)==0):
+				self.__log('requesting data')
+				conn.send('ugh')
+				list = self.__receiveData(conn)
+					
 			''' step 1) wait for <tick-start> '''
-			list = self.__receiveData(conn)
+			#list = self.__receiveData(conn)
 			while 1:	
 				if(len(list)==0):
 					list = self.__receiveData(conn)

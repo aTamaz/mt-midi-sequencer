@@ -65,7 +65,7 @@ class OutputAdapter(threading.Thread): # OutputAdapter runs in its own Thread
 		self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.s.connect((TCP_IP, TCP_PORT))
 
-
+		firstRun=True
 
 		while 1:
 			queue=self.manager.playDataQueue
@@ -73,10 +73,13 @@ class OutputAdapter(threading.Thread): # OutputAdapter runs in its own Thread
 			playdata = queue.get()
 			self.__log('got music data to play')
 			if(playdata!=None):
-				# wait for next request
-				self.s.recv(BUFFER_SIZE)
+				if(not firstRun):
+					# wait for next request
+					self.s.recv(BUFFER_SIZE)
 				
 				self.play(playdata)
+				
+				if(firstRun): firstRun=False
 			queue.task_done()
 
 
