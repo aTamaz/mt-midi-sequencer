@@ -18,7 +18,7 @@ if __name__ == '__main__':
 	print '============================================================'
 
 	# Options:
-	amount_sequences = 1
+	amount_sequences = 3
 	bpm=128
 	#bpm=200
 
