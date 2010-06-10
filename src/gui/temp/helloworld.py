@@ -84,4 +84,3 @@ def go():
     root.add_widget(slider)
 
     runTouchApp(root)
-

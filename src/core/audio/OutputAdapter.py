@@ -22,9 +22,7 @@ class OutputAdapter(threading.Thread): # OutputAdapter runs in its own Thread
 		# mandatory for threading
 		threading.Thread.__init__(self)
 
-		# speed in bpm = beats per minute
-		kwargs.setdefault('bpm', 128)
-		self.__ticktime = self.setBPM(kwargs.get('bpm'))
+
 
 		# get reference to manager. if no -> exception
 		self.manager=kwargs.get('manager')
@@ -42,7 +40,6 @@ class OutputAdapter(threading.Thread): # OutputAdapter runs in its own Thread
 
 	''' set speed in BPM = bits per minute '''
 	def setBPM(self,bpm):
-		#self.__ticktime=16000/bpm	# 1/16 rhytm, 64 notes = 1 sequence length
 		try:
 			self.s
 		except:
