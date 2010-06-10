@@ -5,7 +5,7 @@
 import Sequence
 import EventManager
 #import StartHelper
-#import helloworld
+import helloworld
 
 
 # cmd /K "cd C:\Users\Bao\Desktop\Studium\6. Sem SoSe 10\Multitouch Sequencer\repository\tim\midisequencer\MidiOutput+Event && python Main.py"
@@ -46,7 +46,7 @@ if __name__ == '__main__':
 
 
 
-	#helloworld.go()
+	helloworld.go()
 	#StartHelper().start()
 
 	# if this terminates, program will terminate
