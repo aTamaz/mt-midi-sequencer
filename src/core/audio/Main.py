@@ -39,12 +39,16 @@ if __name__ == '__main__':
 		#seq.id='seq'+str(i)
 		manager.register(seq, seq.getMidiData)
 
-
-
-
-	# gui.temp.helloworld.setBpmHandler(manager.setBPM)
+	
+	''' hello world beispiel -> slider verstellt bpm '''
+	#import gui.temp.helloworld
+	#gui.temp.helloworld.setBpmHandler(manager.setBPM)
+	#gui.temp.helloworld.go()
+	
+	''' button matrix beispiel -> 3 töne schmeißen arpeggiator an '''
 	gui.myButtonMatrix.go(seq1)
 	
+	''' testweise gui implementierung von Ella '''
 	#import gui.temp.Anim9
 	
 	#StartHelper().start()
