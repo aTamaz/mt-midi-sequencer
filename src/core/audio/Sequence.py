@@ -12,6 +12,7 @@ This class is a sequence displayed as an object on the GUI.
 
 
 class Sequence():
+	__playdata = []
 
 	def __init__(self, **kwargs):
 		kwargs.setdefault('id', '')
@@ -22,19 +23,26 @@ class Sequence():
 
 		# for internal clock
 		self.__internalTick=0
-
-		# constants for MIDI Status
-		ON = 1		# note on
-		OFF = 0		# note off
-
+		
+		self.note1 = 0
+		self.note2 = 0
+		self.note3 = 0
+		
+		'''
+		# create an empty playdata:
+		self.__playdata = []
+		for i in range(64):
+			self.__playdata.append([])
+		'''
 		# specification for __playdata structure: http://wiki.github.com/timlandgraf/multitouch/234-midi-events-datenhaltung
 
 		if(self.id=='seq1'):
 			# first static for reference
 			self.__playdata = self.__Arpeggiator.getUgh()
-		else:
-			# all others are random arpgeggiator
-			self.__playdata = self.__Arpeggiator.getRandomLoop()
+	#	else:
+	#		# all others are random arpgeggiator
+	#		self.__playdata = self.__Arpeggiator.getRandomLoop()
+	
 
 	''' callback method for exposing music information '''
 	def getMidiData(self,tick):
@@ -55,3 +63,34 @@ class Sequence():
 	def __log(self, msg):
 		if(self.__logging):
 			print 'Sequence <'+self.id+'>:\t' + msg
+			
+			
+	def setNote(self, note):
+		if self.note1 == 0:
+			self.note1 = note
+			print "first set"
+		elif self.note2 == 0:
+			self.note2 = note
+			print "second set"
+		elif self.note3 == 0:
+			self.note3 = note
+			print "third set"
+		
+		if (self.note3 != 0):
+			if self.note1 > self.note2:
+				self.exchange(self.note1, self.note2)
+			if self.note2 > self.note3:
+				self.exchange(self.note2, self.note3)
+			if self.note1 > self.note2:
+				self.exchange(self.note1, self.note2)
+			self.__playdata = self.__Arpeggiator.getLoop(self.note1, self.note2, self.note3)
+			print "playdata set!"
+			print self.note1
+			print self.note2
+			print self.note3
+			print self.__playdata
+	
+	def exchange(self, note1, note2):
+		tmp = note2
+		note2 = note1
+		note1 = tmp

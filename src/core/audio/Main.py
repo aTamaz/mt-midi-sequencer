@@ -1,6 +1,7 @@
 import Sequence
 import EventManager
-
+import gui.temp.helloworld
+import gui.myButtonMatrix
 
 
 # cmd /K "cd C:\Users\Bao\Desktop\Studium\6. Sem SoSe 10\Multitouch Sequencer\repository\tim\midisequencer\MidiOutput+Event && python Main.py"
@@ -18,8 +19,8 @@ if __name__ == '__main__':
 	#bpm=200
 
 	# Logging On/Off
-	logging_sequences=1
-	logging_eventSystem=1
+	logging_sequences=0
+	logging_eventSystem=0
 
 	######################################################################
 	# edit options above.
@@ -40,9 +41,9 @@ if __name__ == '__main__':
 
 
 
-	import gui.temp.helloworld
-	gui.temp.helloworld.setBpmHandler(manager.setBPM)
-	gui.temp.helloworld.go()
+
+	# gui.temp.helloworld.setBpmHandler(manager.setBPM)
+	gui.myButtonMatrix.go(seq1)
 	
 	#import gui.temp.Anim9
 	

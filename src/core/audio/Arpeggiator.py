@@ -22,8 +22,8 @@ class Arpeggiator():
 			ins = random.randint(0, 127)
 			cha=random.randint(0, 15)
 		else:
-			ins=0
-			cha=0
+			ins=1
+			cha=1
 
 		loop = [
 			[[ins,cha, a - 24, 100, ON]],
@@ -53,9 +53,9 @@ class Arpeggiator():
 			return loop
 
 	def getLoop(self, a, b, c):
-		myLoop = self.__generateLoop(a, b, c,2)
-		myLoop = self.__generateLoop(a, b, c, 2, myLoop)
-		myLoop = self.__generateLoop(a,b, c, 2, myLoop)
+		myLoop = self.__generateLoop(a, b, c, 4, None, False)
+		myLoop = self.__generateLoop(a, b, c, 2, myLoop, getRandom=False)
+		myLoop = self.__generateLoop(a, b, c, 2, myLoop, getRandom=False)
 		return myLoop
 
 	def getUgh(self):
