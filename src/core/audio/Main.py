@@ -31,12 +31,11 @@ if __name__ == '__main__':
 	manager.setBPM(bpm)
 
 	# create sequences and register at manager
-	seq1=Sequence.Sequence(id='seq1', logging=logging_sequences)
+	seq1=Sequence.Sequence(id=1, logging=logging_sequences)
 	manager.register(seq1, seq1.getMidiData)
 
 	for i in range(2, amount_sequences+1):
-		seq=Sequence.Sequence(id='seq'+str(i), logging=logging_sequences)
-		#seq.id='seq'+str(i)
+		seq=Sequence.Sequence(id=i, logging=logging_sequences)
 		manager.register(seq, seq.getMidiData)
 
 	

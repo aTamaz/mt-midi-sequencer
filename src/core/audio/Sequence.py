@@ -15,9 +15,9 @@ class Sequence():
 	__playdata = []
 
 	def __init__(self, **kwargs):
-		kwargs.setdefault('id', '')
+		kwargs.setdefault('id', -1)
 		kwargs.setdefault('logging', True)
-		self.id = kwargs.get('id')
+		self.id = int(kwargs.get('id'))
 		self.__logging = kwargs.get('logging')
 		self.__Arpeggiator = Arpeggiator.Arpeggiator()
 
@@ -36,7 +36,7 @@ class Sequence():
 		'''
 		# specification for __playdata structure: http://wiki.github.com/timlandgraf/multitouch/234-midi-events-datenhaltung
 
-		if(self.id=='seq1'):
+		if(self.id==1):
 			# first static for reference
 			self.__playdata = self.__Arpeggiator.getUgh()
 	#	else:
@@ -62,7 +62,7 @@ class Sequence():
 	''' tunnel for log messages '''
 	def __log(self, msg):
 		if(self.__logging):
-			print 'Sequence <'+self.id+'>:\t' + msg
+			print 'Sequence <'+str(self.id)+'>:\t' + msg
 			
 			
 	def setNote(self, note):
