@@ -39,6 +39,13 @@ if __name__ == '__main__':
 		manager.register(seq, seq.getMidiData)
 
 	
+	# test unregistering a sequence
+	seq42=Sequence.Sequence(id=42, logging=logging_sequences)
+	manager.register(seq42, seq42.getMidiData)
+	manager.unregister(seq42)
+	
+	
+		
 	''' hello world beispiel -> slider verstellt bpm '''
 	#import gui.temp.helloworld
 	#gui.temp.helloworld.setBpmHandler(manager.setBPM)

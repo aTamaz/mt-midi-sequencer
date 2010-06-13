@@ -39,9 +39,9 @@ class Sequence():
 		if(self.id==1):
 			# first static for reference
 			self.__playdata = self.__Arpeggiator.getUgh()
-	#	else:
-	#		# all others are random arpgeggiator
-	#		self.__playdata = self.__Arpeggiator.getRandomLoop()
+		else:
+			# all others are random arpgeggiator
+			self.__playdata = self.__Arpeggiator.getRandomLoop()
 	
 
 	''' callback method for exposing music information '''
