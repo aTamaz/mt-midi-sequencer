@@ -4,7 +4,7 @@ import time
 import threading
 import random
 import socket
-import core.Constants
+import core.Constants as Constants
 
 
 
@@ -46,8 +46,8 @@ class OutputAdapter(threading.Thread): # OutputAdapter runs in its own Thread
 			return
 		
 		self.__log('send setBPM Message')
-		delim = core.Constants.TCP_delimiter
-		setMsg = core.Constants.TCP_setBPM
+		delim = Constants.TCP_delimiter
+		setMsg = Constants.TCP_setBPM
 		self.s.send(delim+setMsg+delim+str(bpm)+delim)
 		
 
@@ -59,9 +59,9 @@ class OutputAdapter(threading.Thread): # OutputAdapter runs in its own Thread
 	def run(self):
 
 		# network connection setup
-		TCP_IP = core.Constants.TCP_ip
-		TCP_PORT = core.Constants.TCP_port
-		BUFFER_SIZE = core.Constants.TCP_buffer_size
+		TCP_IP = Constants.TCP_ip
+		TCP_PORT = Constants.TCP_port
+		BUFFER_SIZE = Constants.TCP_buffer_size
 
 		self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.s.connect((TCP_IP, TCP_PORT))
@@ -102,11 +102,11 @@ class OutputAdapter(threading.Thread): # OutputAdapter runs in its own Thread
 		message format:
 		<tick-start><DELIMITER><event-start><DELIMITER><instrument><DELIMITER><channel><DELIMITER><note><DELIMITER><velocity><DELIMITER><status><DELIMITER><event-end><DELIMITER><event-start>...<event-end>...<DELIMITER><tick-end><DELIMITER>
 		'''		
-		TCP_tick_start 	= core.Constants.TCP_tick_start
-		TCP_tick_end 	= core.Constants.TCP_tick_end
-		TCP_event_start	= core.Constants.TCP_event_start
-		TCP_event_end	= core.Constants.TCP_event_end
-		TCP_delimiter 	= core.Constants.TCP_delimiter		
+		TCP_tick_start 	= Constants.TCP_tick_start
+		TCP_tick_end 	= Constants.TCP_tick_end
+		TCP_event_start	= Constants.TCP_event_start
+		TCP_event_end	= Constants.TCP_event_end
+		TCP_delimiter 	= Constants.TCP_delimiter		
 
 		# send begin of tick
 		self.s.send(TCP_tick_start+TCP_delimiter)

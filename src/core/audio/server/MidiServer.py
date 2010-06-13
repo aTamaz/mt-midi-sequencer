@@ -195,6 +195,13 @@ class MidiServer(threading.Thread):
 		list = str(data).split(core.Constants.TCP_delimiter)
 		list = self.removeBlanksInList(list)			
 		self.__log('received:\t'+str(list))
+		
+		
+		outfile=open("log.txt","a")
+		outfile.write(str(list))
+		outfile.close()
+		
+		
 		return list
 			
 			

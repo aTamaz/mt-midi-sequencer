@@ -7,7 +7,7 @@ Created on 09.06.2010
 
 ''' Logging '''
 LOGGING_sequences=0
-LOGGING_eventSystem=0
+LOGGING_eventSystem=1
 
 ''' Audio System '''
 DEFAULT_bpm=128
@@ -33,5 +33,5 @@ TCP_port = 5005
 TCP_buffer_size = 5120
 
 
-EventManager_playDataQueue_maxsize = 4
-MidiServer_playDataQueue_maxsize = 4
+EventManager_playDataQueue_maxsize = 2
+MidiServer_playDataQueue_maxsize = 2
