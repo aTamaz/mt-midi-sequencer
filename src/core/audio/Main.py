@@ -45,7 +45,7 @@ if __name__ == '__main__':
 	#gui.temp.helloworld.setBpmHandler(manager.setBPM)
 	#gui.temp.helloworld.go()
 	
-	''' button matrix beispiel -> 3 töne schmeißen arpeggiator an '''
+	''' button matrix beispiel -> 3 toene schmeissen arpeggiator an '''
 	gui.myButtonMatrix.go(seq1)
 	
 	''' testweise gui implementierung von Ella '''

@@ -23,7 +23,7 @@ TCP_setBPM          = '<setBPM>'
 ''' connection setup '''
 TCP_ip = '127.0.0.1'
 TCP_port = 5005
-TCP_buffer_size = 5024
+TCP_buffer_size = 5120
 
 
 EventManager_playDataQueue_maxsize = 4
