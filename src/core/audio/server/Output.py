@@ -9,6 +9,7 @@ import pygame
 import pygame.midi
 from pygame.locals import *
 
+import core.Constants as Constants
 
 ################################################################################
 
@@ -25,7 +26,7 @@ class Output(threading.Thread): # Output runs in its own Thread
 		threading.Thread.__init__(self)
 
 		# speed in bpm = beats per minute
-		kwargs.setdefault('bpm', 128)
+		kwargs.setdefault('bpm', Constants.DEFAULT_bpm)
 		self.setBPM(kwargs.get('bpm'))
 
 		# get reference to manager. if no -> exception

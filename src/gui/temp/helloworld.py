@@ -1,4 +1,5 @@
 from pymt import *
+import core.audio.EventManager as EventManager
 
 
 class MTScatterLabel(MTScatterWidget):
@@ -76,7 +77,8 @@ def go():
         scatterLabel.setSize(slider.value)
         scatterLabel.setText(slider.value)
         try:
-            bpmHandler(slider.value)
+            #bpmHandler(slider.value)
+            EventManager.getInstance().setBPM(slider.value)
         except:
             pass
         
