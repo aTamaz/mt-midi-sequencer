@@ -20,10 +20,7 @@ if __name__ == '__main__':
 	######################################################################
 	# edit options above.
 
-	
 	manager = EventManager.getInstance()
-
-
 
 	# create sequences and register at manager
 	seq1=Sequence.Sequence(id=1, logging=Constants.LOGGING_sequences)

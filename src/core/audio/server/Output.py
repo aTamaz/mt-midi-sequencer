@@ -101,9 +101,6 @@ class Output(threading.Thread): # Output runs in its own Thread
 		ON = 1		# note on
 		OFF = 0		# note off
 
-
-
-
 		# send midi data
 		for mididata in playdata:
 			instrument = mididata[0]
