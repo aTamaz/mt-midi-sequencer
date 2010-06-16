@@ -38,7 +38,7 @@ class OutputAdapter(threading.Thread): # OutputAdapter runs in its own Thread
 
 
 
-	''' set speed in BPM = bits per minute '''
+	''' set speed in BPM = beats per minute '''
 	def setBPM(self,bpm):
 		try:
 			self.s
@@ -49,6 +49,9 @@ class OutputAdapter(threading.Thread): # OutputAdapter runs in its own Thread
 		delim = Constants.TCP_delimiter
 		setMsg = Constants.TCP_setBPM
 		self.s.send(delim+setMsg+delim+str(bpm)+delim)
+		
+		# DEBUG
+		print 'send setBPM Message'+str(delim+setMsg+delim+str(bpm)+delim)
 		
 
 	''' tunnel for log messages '''

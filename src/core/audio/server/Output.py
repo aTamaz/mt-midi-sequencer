@@ -79,6 +79,7 @@ class Output(threading.Thread): # Output runs in its own Thread
 			queue=self.manager.playDataQueue
 
 			playdata = queue.get()
+						
 			self.__log('got music data to play')
 			if(playdata!=None):
 
