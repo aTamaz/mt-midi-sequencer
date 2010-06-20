@@ -62,8 +62,6 @@ image_fn = os.path.join(os.path.dirname(__file__), 'icons', 'greeny.png')
 current_dir = os.path.dirname(__file__)
 objlist = []
 
-bpmSlider = None
-
 def action_close_menu(menu, w, args, *largs):
     menu.parent.remove_widget(menu)
     del menu
@@ -277,6 +275,9 @@ class Showslider(MTSlider):
         self.size = (50, 300)
         self.pos = (180,263)
        
+        self.min = 20
+        self.max = 220
+       
         self.alpha = 0.00
         self.red = 0.7
         self.green = 0.4
@@ -402,18 +403,17 @@ class Menubut(MTWidget):
                         btn.push_handlers(on_press=self.clear)
                         self.add_widget(btn)
                         l1 = MTBoxLayout(orientation='vertical',padding = 10, spacing = 3, pos= (180,263))
-                        m = Showslider(cls=('simple', 'colored'), orientation='vertical', value=50)
+                        m = Showslider(cls=('simple', 'colored'), orientation='vertical', value=120)
+                        m.connect('on_value_change',self.bpmSlider_value_change)
                         l1.add_widget(m)
                         self.add_widget(l1)
-                        bpmSlider = m
-                        
-    @bpmSlider.event
-    def on_value_change(*largs):
+
+    ''' event handler for BPM slider's on_value_change '''                                 
+    def bpmSlider_value_change(self,value):
+        print value
         try:
             #bpmHandler(slider.value)
-            EventManager.getInstance().setBPM(bpmSlider.value)
-            print 'ugh  ms,amdasmd,.asmd,.masdkwmdkwlq'
-            print bpmSlider.value
+            EventManager.getInstance().setBPM(value)
         except: 
             pass
 
