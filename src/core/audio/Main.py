@@ -5,6 +5,7 @@ import gui.temp.helloworld
 import gui.myButtonMatrix
 
 
+
 # cmd /K "cd C:\Users\Bao\Desktop\Studium\6. Sem SoSe 10\Multitouch Sequencer\repository\tim\midisequencer\MidiOutput+Event && python Main.py"
 
 
@@ -39,15 +40,15 @@ if __name__ == '__main__':
 	
 		
 	''' hello world beispiel -> slider verstellt bpm '''
-	import gui.temp.helloworld
-	gui.temp.helloworld.setBpmHandler(manager.setBPM)
-	gui.temp.helloworld.go()
+	#import gui.temp.helloworld
+	#gui.temp.helloworld.setBpmHandler(manager.setBPM)
+	#gui.temp.helloworld.go()
 	
 	''' button matrix beispiel -> 3 toene schmeissen arpeggiator an '''
 	#gui.myButtonMatrix.go(seq1)
 	
 	''' testweise gui implementierung von Ella '''
-	#import gui.temp.Anim9
+	import gui.Severalbuttons7
 	
 	#StartHelper().start()
 
