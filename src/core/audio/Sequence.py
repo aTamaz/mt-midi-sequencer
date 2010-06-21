@@ -1,4 +1,4 @@
-import EventManager
+
 import Arpeggiator
 
 import time
@@ -36,7 +36,7 @@ class Sequence():
 		'''
 		# specification for __playdata structure: http://wiki.github.com/timlandgraf/multitouch/234-midi-events-datenhaltung
 
-		if(self.id==1):
+		if(self.id==0):
 			# first static for reference
 			self.__playdata = self.__Arpeggiator.getUgh()
 		else:

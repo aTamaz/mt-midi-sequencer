@@ -254,6 +254,9 @@ class Showinstruments(MTWidget):
         self.add_widget(self.m)
         self.bubbles.append(self.m)
         print self.m
+        
+        # make sequence for this instrument
+        EventManager.getInstance().createSequence()
        
     def draw(self):
         with DO(gx_matrix, gx_blending):
@@ -410,7 +413,7 @@ class Menubut(MTWidget):
 
     ''' event handler for BPM slider's on_value_change '''                                 
     def bpmSlider_value_change(self,value):
-        print value
+        #print value
         try:
             #bpmHandler(slider.value)
             EventManager.getInstance().setBPM(value)

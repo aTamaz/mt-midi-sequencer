@@ -1,0 +1,12 @@
+Jede Sequence hat ja eigene Daten gespeichert. Jede Sequence kann in Lautstärke
+(velocity)verändert werden. Somit kann man unterschiedliche Lautstärken für
+verschiedene Sequences umsetzen.
+
+Der Volume Regler auf dem Mainscreen ist der Master Volume Regler. Dieser kann
+Werte von 0 bis 100 (floats/ints wies System hergibt) annehmen. Die Velocity 
+einer Sequence entspricht dann
+
+Sequence_Velocity*Regler_Zahl/100
+
+Also kurz gesagt Prozentrechnung. Somit werden alle Sequence gleichmäßig
+leiser/lauter gemacht. 

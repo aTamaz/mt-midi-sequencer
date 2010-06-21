@@ -53,9 +53,9 @@ class Arpeggiator():
 			return loop
 
 	def getLoop(self, a, b, c):
-		myLoop = self.__generateLoop(a, b, c, 4, None, False)
-		myLoop = self.__generateLoop(a, b, c, 2, myLoop, getRandom=False)
-		myLoop = self.__generateLoop(a, b, c, 2, myLoop, getRandom=False)
+		myLoop = self.__generateLoop(a, b, c, 4, None, True)
+		myLoop = self.__generateLoop(a, b, c, 2, myLoop, getRandom=True)
+		myLoop = self.__generateLoop(a, b, c, 2, myLoop, getRandom=True)
 		return myLoop
 
 	def getUgh(self):

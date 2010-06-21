@@ -6,8 +6,8 @@ Created on 09.06.2010
 
 
 ''' Logging '''
-LOGGING_sequences=0
-LOGGING_eventSystem=0
+LOGGING_sequences=1
+LOGGING_eventSystem=1
 
 ''' Audio System '''
 DEFAULT_bpm=128

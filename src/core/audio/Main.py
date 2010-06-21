@@ -23,10 +23,12 @@ if __name__ == '__main__':
 
 	manager = EventManager.getInstance()
 
+	
 	# create sequences and register at manager
-	seq1=Sequence.Sequence(id=1, logging=Constants.LOGGING_sequences)
-	manager.register(seq1, seq1.getMidiData)
+	#seq1=Sequence.Sequence(id=1, logging=Constants.LOGGING_sequences)
+	#manager.register(seq1, seq1.getMidiData)
 
+	'''
 	for i in range(2, amount_sequences+1):
 		seq=Sequence.Sequence(id=i, logging=Constants.LOGGING_sequences)
 		manager.register(seq, seq.getMidiData)
@@ -36,7 +38,9 @@ if __name__ == '__main__':
 	seq42=Sequence.Sequence(id=42, logging=Constants.LOGGING_sequences)
 	manager.register(seq42, seq42.getMidiData)
 	manager.unregister(seq42)
+	'''
 	
+	seq1=manager.createSequence()
 	
 		
 	''' hello world beispiel -> slider verstellt bpm '''
@@ -53,5 +57,5 @@ if __name__ == '__main__':
 	#StartHelper().start()
 
 	# if this terminates, program will terminate
-	while 1:
-		a=1
+	#while 1:
+	#	a=1
