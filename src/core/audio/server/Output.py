@@ -6,8 +6,8 @@ import random
 import socket
 
 import pygame
-import pygame.midi
-from pygame.locals import *
+#import pygame.midi
+#from pygame.locals import *
 
 import core.Constants as Constants
 
@@ -21,6 +21,9 @@ class Output(threading.Thread): # Output runs in its own Thread
 		self.__logging = kwargs.get('logging')
 
 		self.__log('initializing Output')
+
+		# midi output
+		self.midi_out = kwargs.get('midi_out')
 
 		# mandatory for threading
 		threading.Thread.__init__(self)
@@ -38,28 +41,13 @@ class Output(threading.Thread): # Output runs in its own Thread
 		self.__lastInstrument=-1
 
 		#######################################
-		device_id = None
-
-		pygame.init()
-		pygame.midi.init()
-
-		self._print_device_info()
-
-		if device_id is None:
-			port = pygame.midi.get_default_output_id()
-		else:
-			port = device_id
-
-		print ("using output_id :%s:" % port)
-
-		# no latency no scheduling of midi events with timestamp
-		self.midi_out = pygame.midi.Output(port, latency = 1)
+		
 
 
 
 	def __del__(self):
 		del self.midi_out
-		pygame.midi.quit()
+		#pygame.midi.quit()
 
 	''' sets ticktime (in miliseconds) -> speed '''
 	def setTickTime(self, time):
@@ -113,36 +101,19 @@ class Output(threading.Thread): # Output runs in its own Thread
 			# change instrument if necessary
 			if(self.__lastInstrument!=instrument):
 				status_change = 192+channel
-				self.midi_out.write([[[status_change,instrument],self.__timestamp]])
+				#self.midi_out.write([[[status_change,instrument],self.__timestamp]])
 				self.__lastInstrument=instrument
 
 			if status == ON:
 				status_on = 144+channel
-				self.midi_out.write([[[status_on,note,velocity],self.__timestamp]])
+				#self.midi_out.write([[[status_on,note,velocity],self.__timestamp]])
 				self.__log('\tnote on>\t' + str(note)) #LOG
 			elif status == OFF:
 				status_off = 128+channel
-				self.midi_out.write([[[status_off,note,velocity],self.__timestamp]])
+				#self.midi_out.write([[[status_off,note,velocity],self.__timestamp]])
 				self.__log('\t< note off\t' + str(note)) # LOG
 
 			#self.__log('played notes: ' + str(self.__on_notes)) # LOG
 
 
-	def print_device_info(self):
-		pygame.midi.init()
-		self._print_device_info()
-		pygame.midi.quit()
-
-	def _print_device_info(self):
-		for i in range( pygame.midi.get_count() ):
-			r = pygame.midi.get_device_info(i)
-			(interf, name, input, output, opened) = r
-
-			in_out = ""
-			if input:
-				in_out = "(input)"
-			if output:
-				in_out = "(output)"
-
-			print ("%2i: interface :%s:, name :%s:, opened :%s:  %s" %
-				(i, interf, name, opened, in_out))
+	

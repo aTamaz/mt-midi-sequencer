@@ -10,6 +10,7 @@ import math
 from random import randint, random
 import random
 import core.audio.EventManager as EventManager
+ 
 
 IS_PYMT_PLUGIN = True
 PLUGIN_TITLE = 'Menu Music'
@@ -472,8 +473,7 @@ class Menubut(MTWidget):
                         W = MTWindow()
                         self.add_widget(l4)
                        
-                
-    
+
 #
 #    def randomize(self, *largs):
 #        w = self.get_parent_window()
@@ -490,7 +490,7 @@ w.add_widget(fl)
 
 
 if __name__ == '__main__':
-    #manager = EventManager.getInstance()
-    #seq1=manager.createSequence()
+    manager = EventManager.getInstance()
+    seq1=manager.createSequence()
     runTouchApp()
  

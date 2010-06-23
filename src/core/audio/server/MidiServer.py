@@ -26,7 +26,7 @@ class MidiServer(threading.Thread):
 		
 		# setup output
 		self.output=Output.Output(manager=self, logging=self.__logging)
-		self.output.setDaemon(True)
+		#self.output.setDaemon(True)
 		
 		
 	''' mainloop '''

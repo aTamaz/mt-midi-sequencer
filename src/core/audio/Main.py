@@ -23,7 +23,6 @@ if __name__ == '__main__':
 
 	manager = EventManager.getInstance()
 
-	
 	# create sequences and register at manager
 	#seq1=Sequence.Sequence(id=1, logging=Constants.LOGGING_sequences)
 	#manager.register(seq1, seq1.getMidiData)
@@ -52,10 +51,10 @@ if __name__ == '__main__':
 	#gui.myButtonMatrix.go(seq1)
 	
 	''' testweise gui implementierung von Ella '''
-	import gui.Severalbuttons7
+	#import gui.Severalbuttons7
 	
 	#StartHelper().start()
 
 	# if this terminates, program will terminate
-	#while 1:
-	#	a=1
+	while 1:
+		a=1
