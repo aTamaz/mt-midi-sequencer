@@ -22,18 +22,18 @@ if __name__ == '__main__':
     pygame.midi.init()
 
     port = pygame.midi.get_default_output_id()
-    myOutput = pygame.midi.Output(port, 100)
+    myOutput = pygame.midi.Output(port, buffer_size=8, latency=1)
 
     manager = EventManager.EventManager(logging=Constants.LOGGING_eventSystem, midi_out=myOutput)
-    manager.start()
+    
     #seq1=manager.createSequence()
     
     ''' start ella's main screen '''
-    import gui.Severalbuttons7
+    #import gui.Severalbuttons7
     
     ''' button matrix beispiel -> 3 toene schmeissen arpeggiator an '''
-    #import gui.myButtonMatrix
-    #myButtonMatrix.go(manager.createSequence())
+    import gui.myButtonMatrix
+    myButtonMatrix.go(manager.createSequence())
     
     ''' hello world beispiel -> slider verstellt bpm '''
     #import gui.temp.helloworld

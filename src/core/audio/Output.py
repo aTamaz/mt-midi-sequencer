@@ -80,8 +80,8 @@ class Output(threading.Thread): # Output runs in its own Thread
 			''' sleep 3/4 of the real time you should wait. rest of waiting
 				does the OS
 			'''
-			#sleepTime = float(self.__ticktime)/1000.0*(19.0/20.0) # wait 3/4 of time unit
-			sleepTime = float(self.__ticktime)/1000.0*(100.0/100.0)
+			sleepTime = float(self.__ticktime)/1000.0*(29.0/30.0) # wait 3/4 of time unit
+			#sleepTime = float(self.__ticktime)/1000.0*(99.0/100.0)
 			#sleepTime = float(self.__ticktime)/1000.0*(1.0/2.0)
 			time.sleep(sleepTime)
 
@@ -107,8 +107,6 @@ class Output(threading.Thread): # Output runs in its own Thread
 			note = mididata[2]
 			velocity = int(float(mididata[3])*float(self.__volume)/float(100))
 			status = mididata[4]
-			
-			print velocity
 			
 
 			# change instrument if necessary

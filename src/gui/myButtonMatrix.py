@@ -27,7 +27,17 @@ def go(seq):
     for i in xrange(32):
         rawNoteDataArray.append([])
         for j in xrange(12):
-            rawNoteDataArray[i].append([])
+            rawNoteDataArray[i].append([])    
+    
+    # Set Button
+    btnSet = MTButton(label='Set', pos=(650,50))
+    @btnSet.event
+    def on_press(*largs):
+        print keyboard.getRawNoteData(rawNoteDataArray)
+    
+    root.add_widget(btnSet)
+    
+
     
     @keyboard.event
     def on_press(*largs):
