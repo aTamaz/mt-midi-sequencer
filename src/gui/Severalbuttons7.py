@@ -487,7 +487,7 @@ class Menubut(MTWidget):
 fl = Menubut()
 w = MTWindow()
 w.add_widget(fl)
-
+runTouchApp()
 
 if __name__ == '__main__':
     #manager = EventManager.getInstance()
