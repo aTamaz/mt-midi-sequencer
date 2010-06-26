@@ -1,13 +1,6 @@
-import sys
-import os
-import time
 import threading
-import random
-import socket
 
 import pygame
-#import pygame.midi
-#from pygame.locals import *
 
 import core.Constants as Constants
 
@@ -79,6 +72,9 @@ class Output(threading.Thread): # Output runs in its own Thread
 
 			queue.task_done()
 			
+			''' sleep 3/4 of the real time you should wait. rest of waiting
+				does the OS
+			'''
 			sleepTime = float(self.__ticktime)/1000.0*(3.0/4.0)
 			time.sleep(sleepTime)
 
