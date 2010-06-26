@@ -10,6 +10,9 @@ import math
 from random import randint, random
 import random
 import core.audio.EventManager as EventManager
+
+import pygame
+import pygame.midi
  
 
 IS_PYMT_PLUGIN = True
@@ -490,7 +493,15 @@ w.add_widget(fl)
 
 
 if __name__ == '__main__':
-    manager = EventManager.getInstance()
+    pygame.init()
+    pygame.midi.init()
+
+    port = pygame.midi.get_default_output_id()
+    myOutput = pygame.midi.Output(port, 100)
+
+    manager = EventManager.EventManager(logging=False, midi_out=myOutput)
+    manager.start()
     seq1=manager.createSequence()
+    
     runTouchApp()
  

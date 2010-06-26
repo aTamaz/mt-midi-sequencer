@@ -11,6 +11,8 @@ import pygame
 
 import core.Constants as Constants
 
+import time
+
 ################################################################################
 
 class Output(threading.Thread): # Output runs in its own Thread
@@ -74,6 +76,9 @@ class Output(threading.Thread): # Output runs in its own Thread
 				self.play(playdata)
 
 			queue.task_done()
+			
+			sleepTime = float(self.__ticktime)/1000.0*(3.0/4.0)
+			time.sleep(sleepTime)
 
 
 	def play(self, playdata):
@@ -101,16 +106,16 @@ class Output(threading.Thread): # Output runs in its own Thread
 			# change instrument if necessary
 			if(self.__lastInstrument!=instrument):
 				status_change = 192+channel
-				#self.midi_out.write([[[status_change,instrument],self.__timestamp]])
+				self.midi_out.write([[[status_change,instrument],self.__timestamp]])
 				self.__lastInstrument=instrument
 
 			if status == ON:
 				status_on = 144+channel
-				#self.midi_out.write([[[status_on,note,velocity],self.__timestamp]])
+				self.midi_out.write([[[status_on,note,velocity],self.__timestamp]])
 				self.__log('\tnote on>\t' + str(note)) #LOG
 			elif status == OFF:
 				status_off = 128+channel
-				#self.midi_out.write([[[status_off,note,velocity],self.__timestamp]])
+				self.midi_out.write([[[status_off,note,velocity],self.__timestamp]])
 				self.__log('\t< note off\t' + str(note)) # LOG
 
 			#self.__log('played notes: ' + str(self.__on_notes)) # LOG
