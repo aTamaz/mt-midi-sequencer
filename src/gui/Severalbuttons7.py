@@ -413,14 +413,11 @@ class Menubut(MTWidget):
 
     ''' event handler for BPM slider's on_value_change '''                                 
     def bpmSlider_value_change(self,value):
-        #print value
         try:
-            #bpmHandler(slider.value)
             EventManager.getInstance().setBPM(value)
         except: 
             pass
 
-         
     def volume(self, *largs):
           for b in self.children:
             if b == self.buttons:
@@ -435,8 +432,19 @@ class Menubut(MTWidget):
                         self.add_widget(btn)
                         l2 = MTBoxLayout(orientation='vertical',padding = 10, spacing = 3, pos= (180,263))
                         m = Showslider(cls=('simple', 'colored'), orientation='vertical', value=50)
+                        m.min = 0
+                        m.max = 100
+                        m.connect('on_value_change',self.volumeSlider_value_change)
                         l2.add_widget(m)
                         self.add_widget(l2)
+                        
+    ''' event handler for volume slider's on_value_change '''                                 
+    def volumeSlider_value_change(self,value):
+        try:
+            EventManager.getInstance().setVolume(value)
+        except: 
+            pass
+                        
     def delay(self, *largs):
           for b in self.children:
             if b == self.buttons:

@@ -36,10 +36,15 @@ class Output(threading.Thread): # Output runs in its own Thread
 
 		self.__timestamp=0
 		self.__lastInstrument=-1
+		self.__volume=50
 
 		#######################################
 		
-
+	''' sets volume. volume must be between 0 and 100. float allowed '''
+	def setVolume(self, volume):
+		if (volume<0 or volume>100):
+			return
+		self.__volume=volume
 
 
 	def __del__(self):
@@ -75,7 +80,9 @@ class Output(threading.Thread): # Output runs in its own Thread
 			''' sleep 3/4 of the real time you should wait. rest of waiting
 				does the OS
 			'''
-			sleepTime = float(self.__ticktime)/1000.0*(3.0/4.0)
+			#sleepTime = float(self.__ticktime)/1000.0*(19.0/20.0) # wait 3/4 of time unit
+			sleepTime = float(self.__ticktime)/1000.0*(100.0/100.0)
+			#sleepTime = float(self.__ticktime)/1000.0*(1.0/2.0)
 			time.sleep(sleepTime)
 
 
@@ -98,8 +105,11 @@ class Output(threading.Thread): # Output runs in its own Thread
 			instrument = mididata[0]
 			channel = mididata[1]
 			note = mididata[2]
-			velocity = mididata[3]
+			velocity = int(float(mididata[3])*float(self.__volume)/float(100))
 			status = mididata[4]
+			
+			print velocity
+			
 
 			# change instrument if necessary
 			if(self.__lastInstrument!=instrument):
