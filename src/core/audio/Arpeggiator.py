@@ -14,7 +14,8 @@ class Arpeggiator():
 		ON = 1		# note on
 		OFF = 0		# note off
 
-		if a > b or b > c or a < 60 or a > 71 or b < 60 or b > 71 or c < 60 or c > 71 or loopTimes < 1:
+		if a > b or b > c or a < 60 or a > 72 or b < 60 or b > 72 or c < 60 or c > 72 or loopTimes < 1:
+			print "Arpeggio generation failed."
 			return None
 
 		if(getRandom):
