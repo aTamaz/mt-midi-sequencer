@@ -29,11 +29,11 @@ if __name__ == '__main__':
     #seq1=manager.createSequence()
     
     ''' start ella's main screen '''
-    #import gui.Severalbuttons7
+    import gui.Severalbuttons7
     
     ''' button matrix beispiel -> 3 toene schmeissen arpeggiator an '''
-    import gui.myButtonMatrix
-    myButtonMatrix.go(manager.createSequence())
+    #import gui.myButtonMatrix
+    #myButtonMatrix.go(manager.createSequence())
     
     ''' hello world beispiel -> slider verstellt bpm '''
     #import gui.temp.helloworld

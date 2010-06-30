@@ -379,37 +379,30 @@ class Menubut(MTWidget):
     def arpegiator(self, *largs):
         m = MTButton(label='buhuh', pos = (400,140))
         self.add_widget(m)
-        for b in self.children:
-            if b == self.buttons:
-                a = b.children
-                for c in a:
-                    if c.label == 'Arpegiator':
-                        x = c.x
-                        y = c.y
-                        self.remove_widget(c)
-                        btn = MTButton(label='Arpegiator', size = (100,60),pos = (x,y), cls=('simple','pcolored'))
-                        btn.push_handlers(on_press=self.clear)
-                        self.add_widget(btn)
+
+        c = self.btn0
+        x = c.x
+        y = c.y
+        self.remove_widget(c)
+        btn = MTButton(label='Arpegiator', size = (100,60),pos = (x,y), cls=('simple','pcolored'))
+        btn.push_handlers(on_press=self.clear)
+        self.add_widget(btn)
                         
         
                        
     def bpm(self, *largs):
-          for b in self.children:
-            if b == self.buttons:
-                a = b.children
-                for c in a:
-                    if c.label == 'BPM':
-                        x = c.x
-                        y = c.y
-                        self.remove_widget(c)
-                        btn = MTButton(label='BPM', size = (100,60),pos = (x,y), cls=('simple','pcolored'))
-                        btn.push_handlers(on_press=self.clear)
-                        self.add_widget(btn)
-                        l1 = MTBoxLayout(orientation='vertical',padding = 10, spacing = 3, pos= (180,263))
-                        m = Showslider(cls=('simple', 'colored'), orientation='vertical', value=120)
-                        m.connect('on_value_change',self.bpmSlider_value_change)
-                        l1.add_widget(m)
-                        self.add_widget(l1)
+        c = self.btn1
+        x = c.x
+        y = c.y
+        self.remove_widget(c)
+        btn = MTButton(label='BPM', size = (100,60),pos = (x,y), cls=('simple','pcolored'))
+        btn.push_handlers(on_press=self.clear)
+        self.add_widget(btn)
+        l1 = MTBoxLayout(orientation='vertical',padding = 10, spacing = 3, pos= (180,263))
+        m = Showslider(cls=('simple', 'colored'), orientation='vertical', value=120)
+        m.connect('on_value_change',self.bpmSlider_value_change)
+        l1.add_widget(m)
+        self.add_widget(l1)
 
     ''' event handler for BPM slider's on_value_change '''                                 
     def bpmSlider_value_change(self,value):
@@ -419,24 +412,20 @@ class Menubut(MTWidget):
             pass
 
     def volume(self, *largs):
-          for b in self.children:
-            if b == self.buttons:
-                a = b.children
-                for c in a:
-                    if c.label == 'Volume':
-                        x = c.x
-                        y = c.y
-                        self.remove_widget(c)
-                        btn = MTButton(label='Volume', size = (100,60),pos = (x,y), cls=('simple','pcolored'))
-                        btn.push_handlers(on_press=self.clear)
-                        self.add_widget(btn)
-                        l2 = MTBoxLayout(orientation='vertical',padding = 10, spacing = 3, pos= (180,263))
-                        m = Showslider(cls=('simple', 'colored'), orientation='vertical', value=50)
-                        m.min = 0
-                        m.max = 100
-                        m.connect('on_value_change',self.volumeSlider_value_change)
-                        l2.add_widget(m)
-                        self.add_widget(l2)
+        c = self.btn3
+        x = c.x
+        y = c.y
+        self.remove_widget(c)
+        btn = MTButton(label='Volume', size = (100,60),pos = (x,y), cls=('simple','pcolored'))
+        btn.push_handlers(on_press=self.clear)
+        self.add_widget(btn)
+        l2 = MTBoxLayout(orientation='vertical',padding = 10, spacing = 3, pos= (180,263))
+        m = Showslider(cls=('simple', 'colored'), orientation='vertical', value=50)
+        m.min = 0
+        m.max = 100
+        m.connect('on_value_change',self.volumeSlider_value_change)
+        l2.add_widget(m)
+        self.add_widget(l2)
                         
     ''' event handler for volume slider's on_value_change '''                                 
     def volumeSlider_value_change(self,value):
@@ -446,39 +435,31 @@ class Menubut(MTWidget):
             pass
                         
     def delay(self, *largs):
-          for b in self.children:
-            if b == self.buttons:
-                a = b.children
-                for c in a:
-                    if c.label == 'Delay':
-                        x = c.x
-                        y = c.y
-                        self.remove_widget(c)
-                        btn = MTButton(label='Delay', size = (100,60),pos = (x,y), cls=('simple','pcolored'))
-                        btn.push_handlers(on_press=self.clear)
-                        self.add_widget(btn)
-                        l3 = MTBoxLayout(orientation='vertical',padding = 10, spacing = 3, pos= (180,263))
-                        m = Showslider(cls=('simple', 'colored'), orientation='vertical', value=50)
-                        l3.add_widget(m)
-                        self.add_widget(l3)
+        c = self.btn2
+        x = c.x
+        y = c.y
+        self.remove_widget(c)
+        btn = MTButton(label='Delay', size = (100,60),pos = (x,y), cls=('simple','pcolored'))
+        btn.push_handlers(on_press=self.clear)
+        self.add_widget(btn)
+        l3 = MTBoxLayout(orientation='vertical',padding = 10, spacing = 3, pos= (180,263))
+        m = Showslider(cls=('simple', 'colored'), orientation='vertical', value=50)
+        l3.add_widget(m)
+        self.add_widget(l3)
                         
     def instruments(self, *largs):
-          for b in self.children:
-            if b == self.buttons:
-                a = b.children
-                for c in a:
-                    if c.label == 'Instruments':
-                        x = c.x
-                        y = c.y
-                        self.remove_widget(c)
-                        btn = MTButton(label='Instruments', size = (100,60),pos = (x,y), cls=('simple','pcolored'))
-                        btn.push_handlers(on_press=self.clear)
-                        self.add_widget(btn)
-                        l4 = MTBoxLayout(orientation='vertical',padding = 10, spacing = 3)
-                        list = Showinstruments()
-                        l4.add_widget(list)
-                        W = MTWindow()
-                        self.add_widget(l4)
+        c = self.btn4
+        x = c.x
+        y = c.y
+        self.remove_widget(c)
+        btn = MTButton(label='Instruments', size = (100,60),pos = (x,y), cls=('simple','pcolored'))
+        btn.push_handlers(on_press=self.clear)
+        self.add_widget(btn)
+        l4 = MTBoxLayout(orientation='vertical',padding = 10, spacing = 3)
+        list = Showinstruments()
+        l4.add_widget(list)
+        W = MTWindow()
+        self.add_widget(l4)
                        
                 
     
