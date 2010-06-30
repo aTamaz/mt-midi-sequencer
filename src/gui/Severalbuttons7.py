@@ -399,7 +399,7 @@ class Menubut(MTWidget):
         btn.push_handlers(on_press=self.clear)
         self.add_widget(btn)
         l1 = MTBoxLayout(orientation='vertical',padding = 10, spacing = 3, pos= (180,263))
-        m = Showslider(cls=('simple', 'colored'), orientation='vertical', value=120)
+        m = Showslider(cls=('simple', 'colored'), orientation='vertical', value=EventManager.getInstance().getBPM())
         m.connect('on_value_change',self.bpmSlider_value_change)
         l1.add_widget(m)
         self.add_widget(l1)
@@ -420,7 +420,7 @@ class Menubut(MTWidget):
         btn.push_handlers(on_press=self.clear)
         self.add_widget(btn)
         l2 = MTBoxLayout(orientation='vertical',padding = 10, spacing = 3, pos= (180,263))
-        m = Showslider(cls=('simple', 'colored'), orientation='vertical', value=50)
+        m = Showslider(cls=('simple', 'colored'), orientation='vertical', value=EventManager.getInstance().getVolume())
         m.min = 0
         m.max = 100
         m.connect('on_value_change',self.volumeSlider_value_change)
@@ -446,7 +446,7 @@ class Menubut(MTWidget):
         m = Showslider(cls=('simple', 'colored'), orientation='vertical', value=50)
         l3.add_widget(m)
         self.add_widget(l3)
-                        
+                    
     def instruments(self, *largs):
         c = self.btn4
         x = c.x

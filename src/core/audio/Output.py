@@ -46,6 +46,8 @@ class Output(threading.Thread): # Output runs in its own Thread
 			return
 		self.__volume=volume
 
+	def getVolume(self):
+		return self.__volume
 
 	def __del__(self):
 		del self.midi_out
@@ -58,6 +60,11 @@ class Output(threading.Thread): # Output runs in its own Thread
 	''' set speed in BPM = bits per minute '''
 	def setBPM(self,bpm):
 		self.__ticktime=16000/int(float(bpm))	# 1/16 rhytm, 64 notes = 1 sequence length
+		
+	def getBPM(self):
+		if (int(self.__ticktime) == 0):
+			return 0
+		return int(16000.0/float(self.__ticktime))
 
 	''' tunnel for log messages '''
 	def __log(self, msg):
