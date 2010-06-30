@@ -1,15 +1,10 @@
-import sys
-import os
-import time
 import threading
-import random
-import socket
 
 import pygame
-import pygame.midi
-from pygame.locals import *
 
 import core.Constants as Constants
+
+import time
 
 ################################################################################
 
@@ -22,6 +17,16 @@ class Output(threading.Thread): # Output runs in its own Thread
 
 		self.__log('initializing Output')
 
+		# midi output
+		self.midi_out = kwargs.get('midi_out')
+		if self.midi_out==None:
+			raise Exception('Output must be instantiated with an associated pygame midi Output!')
+
+		# get reference to manager. if no -> exception
+		self.manager=kwargs.get('manager')
+		if self.manager==None:
+			raise Exception('Output must be instantiated with an associated EventManager!')
+		
 		# mandatory for threading
 		threading.Thread.__init__(self)
 
@@ -29,37 +34,22 @@ class Output(threading.Thread): # Output runs in its own Thread
 		kwargs.setdefault('bpm', Constants.DEFAULT_bpm)
 		self.setBPM(kwargs.get('bpm'))
 
-		# get reference to manager. if no -> exception
-		self.manager=kwargs.get('manager')
-		if self.manager==None:
-			raise Exception('Output must be instantiated with an associated EventManager!')
-
 		self.__timestamp=0
 		self.__lastInstrument=-1
+		self.__volume=50
 
 		#######################################
-		device_id = None
-
-		pygame.init()
-		pygame.midi.init()
-
-		self._print_device_info()
-
-		if device_id is None:
-			port = pygame.midi.get_default_output_id()
-		else:
-			port = device_id
-
-		print ("using output_id :%s:" % port)
-
-		# no latency no scheduling of midi events with timestamp
-		self.midi_out = pygame.midi.Output(port, latency = 1)
-
+		
+	''' sets volume. volume must be between 0 and 100. float allowed '''
+	def setVolume(self, volume):
+		if (volume<0 or volume>100):
+			return
+		self.__volume=volume
 
 
 	def __del__(self):
 		del self.midi_out
-		pygame.midi.quit()
+		#pygame.midi.quit()
 
 	''' sets ticktime (in miliseconds) -> speed '''
 	def setTickTime(self, time):
@@ -79,12 +69,21 @@ class Output(threading.Thread): # Output runs in its own Thread
 			queue=self.manager.playDataQueue
 
 			playdata = queue.get()
+						
 			self.__log('got music data to play')
 			if(playdata!=None):
 
 				self.play(playdata)
 
 			queue.task_done()
+			
+			''' sleep 3/4 of the real time you should wait. rest of waiting
+				does the OS
+			'''
+			sleepTime = float(self.__ticktime)/1000.0*(29.0/30.0) # wait 3/4 of time unit
+			#sleepTime = float(self.__ticktime)/1000.0*(99.0/100.0)
+			#sleepTime = float(self.__ticktime)/1000.0*(1.0/2.0)
+			time.sleep(sleepTime)
 
 
 	def play(self, playdata):
@@ -106,8 +105,9 @@ class Output(threading.Thread): # Output runs in its own Thread
 			instrument = mididata[0]
 			channel = mididata[1]
 			note = mididata[2]
-			velocity = mididata[3]
+			velocity = int(float(mididata[3])*float(self.__volume)/float(100))
 			status = mididata[4]
+			
 
 			# change instrument if necessary
 			if(self.__lastInstrument!=instrument):
@@ -127,21 +127,4 @@ class Output(threading.Thread): # Output runs in its own Thread
 			#self.__log('played notes: ' + str(self.__on_notes)) # LOG
 
 
-	def print_device_info(self):
-		pygame.midi.init()
-		self._print_device_info()
-		pygame.midi.quit()
-
-	def _print_device_info(self):
-		for i in range( pygame.midi.get_count() ):
-			r = pygame.midi.get_device_info(i)
-			(interf, name, input, output, opened) = r
-
-			in_out = ""
-			if input:
-				in_out = "(input)"
-			if output:
-				in_out = "(output)"
-
-			print ("%2i: interface :%s:, name :%s:, opened :%s:  %s" %
-				(i, interf, name, opened, in_out))
+	
