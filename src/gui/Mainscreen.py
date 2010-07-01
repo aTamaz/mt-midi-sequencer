@@ -56,7 +56,7 @@ slider.colored {
 '''  
 
 css_add_sheet(additional_css)
-image_fn = os.path.join(os.path.dirname(__file__), 'icons', 'greeny.png')
+
 
 
 current_dir = os.path.dirname(__file__)
@@ -65,6 +65,19 @@ objlist = []
 def action_close_menu(menu, w, args, *largs):
     menu.parent.remove_widget(menu)
     del menu
+def handle_image_move(image, *largs):
+        w = image.get_parent_window()
+        if not w:
+            return
+        if image.x < 0:
+            image.pos = (0, image.y)
+        if image.y < 0:
+                image.pos = (image.x, 0)
+        if image.x > w.width:
+            image.pos = (w.width, image.y)
+        if image.y > w.height:
+            image.pos = (image.x, w.height)
+      
 
 class MTPhoto(MTKineticItem):
     def __init__(self, **kwargs):
@@ -79,116 +92,33 @@ class MTPhoto(MTKineticItem):
         self.image.scale= self.scale
         self.image.draw()
         
-class MusicArea(MTWidget):
+class MusicBubble(MTWidget):
     def __init__(self, **kwargs):
-        super(MusicArea, self).__init__(**kwargs)
-        self.pos = (250, 0)
-        self.size = (640, 480)
+        super(MusicBubble, self).__init__(**kwargs)
         self.bgcolor = (0,0,0,1)
         self.color = (0,1,0,1.0)
         self.touch_positions = {}
         self.filename = kwargs.get('filename')
         #print self.filename
-        self.button = MTImageButton(filename=self.filename, cls = ('simple'))
-        self.button.touched = False
-        #self.button.connect('on_touch_down', curry(self.music_activate, self.button))
-        #self.button.push_handler(on_touch_down=self.music_activate)
-        self.add_widget(self.button)
+        img = Loader.image(self.filename)
         self.scale = 0.8
         w = MTWindow()
-        x = self.width-int(random.uniform(100, w.width-100))
-        y = self.height-int(random.uniform(100, w.height-100))
-        self.button.pos= (x,y) 
-        print self.button 
-        W = MTWindow()    
-        self.clear = MTButton(label='Clear', pos = (W.width-50,W.height-50),size = (40,40),cls=('simple'))
-        self.clear.push_handlers(on_press=self.music_clear)       
-        self.add_widget(self.clear)
-          
+        x = int(random.uniform(300, 600))
+        y = int(random.uniform(100, 500))
+        b = MTScatterImage(image=img, pos=(x,y))
+        b.push_handlers(on_move=curry(handle_image_move, b))
+        self.add_widget(b)
+       # self.button = MTImageButton(filename=self.filename, cls = ('simple'))
+        #self.button.touched = False
         
-        self.selected = None
-        self.radius= 60
-        self.red = 0.3
-        self.green = 0.9
-        self.blue = 0.7
-        self.alpha = 1
-       
-    def draw_circle(self):
+        #self.button.connect('on_touch_down', curry(self.music_activate, self.button))
+        #self.button.connect('on_touch_up', curry(self.music_deactivate, self.button))
+        #self.button.push_handler(on_touch_down=self.music_activate)
+        #self.add_widget(self.button)
         
-        
-        with DO(gx_matrix, gx_blending): 
-            glColor4f(self.red,self.green,self.blue,self.alpha)    
-            drawCircle(pos=(self.x + self.width/2-15,self.y + self.height/2-10),radius=self.radius, linewidth = 7)
-        
-      
-
-
-    def music_clear(self, *largs):
-       #print len(self.bubbles)
-       #print self.parent
-       print len(self.parent.bubbles)
-       for a in self.parent.bubbles:
-           #print a
-           b = self.parent.bubbles.pop()
-           print b
-           print b.button
-           self.remove_widget(b.button)
+        #self.button.pos = (x,y)
     
-#    def music_activate(self, *largs):
-#        print "music activated"
-#        self.draw_circle()
-    def music_activate(self, touch, *largs):
-        print "music activated"
-        if not self.collide_point(touch.x, touch.y):
-            #print "it colides"
-            if self.button.touched == False:
-                #print self.button
-                self.Abubbles.append(self.button)
-                self.touched = True
-            else:
-                self.button.touched = False
-        for a in self.Abubbles:
-            print self.Abubbles.pop()  
 
-
-        
-#class MTMusic(MTWidget):
-#    def __init__(self, **kwargs):
-#        super(MTMusic, self).__init__(**kwargs)
-#        
-#        self.filename = kwargs.get('filename')
-#        #print self.filename
-#        self.image    = pymt.Image(self.filename)
-#        self.scale = 0.8
-#        W = self.get_parent_window()
-#        print W
-#        w = MTWindow()
-#        x = W.width-int(random.uniform(100, w.width-100))
-#        y = W.height-int(random.uniform(100, w.height-100))
-#        self.pos = (x,y)
-#        self.selected = None
-#        self.radius= 60
-#        self.red = 0.3
-#        self.green = 0.9
-#        self.blue = 0.7
-#        self.alpha = 1
-#       
-#
-#    def on_draw(self):
-#        
-#        self.image.pos  = self.pos
-#        self.image.scale= self.scale 
-#        with DO(gx_matrix, gx_blending): 
-#            glColor4f(self.red,self.green,self.blue,self.alpha)    
-#            drawCircle(pos=(self.x + self.width/2-15,self.y + self.height/2-10),radius=self.radius, linewidth = 7)
-#        self.image.draw()
-#    def draw(self):
-#         #background
-#        if self.selected:
-#            set_color(0, 0.1, 0)
-#        else:
-#            set_color(0, 0, 0)
-#       
 
 
 class Showinstruments(MTWidget):
@@ -203,6 +133,8 @@ class Showinstruments(MTWidget):
         self.add_widget(self.list)
         self.bubbles = []
         self.Abubbles = []
+        self.touch_positions = {}
+        self.index = 0
 
         for p in range(8):
             imgName = os.path.join(current_dir, 'instruments', 'pic%d.png' % (p+1))
@@ -246,17 +178,64 @@ class Showinstruments(MTWidget):
             self.current.selected = False
         self.current = item
         self.current.selected = True
-        #print self.current.filename
         a = self.current.filename
-        self.m = MusicArea(filename = a)
-        #w = self.get_parent_window()
-        #w.add_widget(self.object)
+        self.m = MusicBubble(filename = a)
+        self.m.push_handlers(on_touch_down =self.bubble_press)
         self.add_widget(self.m)
         self.bubbles.append(self.m)
-        print self.m
+        W = MTWindow() 
+        self.clear = MTButton(label='Clear', pos = (W.width-50,W.height-50),size = (40,40),cls=('simple'))
+        self.clear.push_handlers(on_press=self.music_clear)
+        self.add_widget(self.clear)
         
         # make sequence for this instrument
         EventManager.getInstance().createSequence()
+        
+    def find_node(self, x, y, touch):
+        for c in self.children:
+            if c in self.bubbles:
+                #print c
+                if c.collide_point(x, y):
+                    #print c.width, c.height,c.pos
+                    print "in colision"
+                    print c
+                    #self.filename = os.path.join(current_dir, 'instruments', 'pic88.png')
+                    #self.button = MTImageButton(filename=self.filename, pos = c.pos)
+                    #self.button.touched = False
+                    #self.add_widget(self.button)
+                    #print touch.id
+                    
+                    
+                    
+                    return c 
+                    self.index = self.index+1
+                    
+                    
+    def bubble_press(self, touch):
+        x, y = self.to_local(*touch.pos)
+        node = self.find_node(x, y, touch)
+        if node != None:
+            self.Abubbles.append(node)
+        print len(self.Abubbles)
+    
+        
+     
+#    def draw_ui(self):
+#       for p in self.touch_positions:
+#            for pos in self.touch_positions[p][len(self.touch_positions[p])-1:]:
+#                set_color(0.5,0,0.8)
+#                drawCircle((pos[0],pos[1]),25)
+#                for p in self.touch_positions:
+#                    for pos2 in self.touch_positions[p][len(self.touch_positions[p])-1:]:
+#                        print pos2
+#                        err = 30
+#                        set_color(0.5,0,0.8)
+#                        #set_color(random()-0.1,0,random()+0.4)
+#                        #drawLine((pos[0]+err*(random()-random()),pos[1]+err*(random()-random()),pos2[0]+err*(random()-random()),pos2[1]+err*(random()-random())), 15*random())
+#
+    def on_draw(self):
+        super(Showinstruments, self).on_draw()
+        #self.draw_ui()      
        
     def draw(self):
         with DO(gx_matrix, gx_blending):
@@ -270,14 +249,17 @@ class Showinstruments(MTWidget):
         super(Showinstruments, self).draw()
     def ListFade(self,dt):
         self.do(self.fadeout)
-       
+    def music_clear(self, *largs):
+        for a in self.bubbles:
+            self.remove_widget(a)
+   
 class Showslider(MTSlider):
     def __init__(self, **kwargs):
         super(Showslider, self).__init__(**kwargs)
         
         self.size = (50, 300)
         self.pos = (180,263)
-       
+        
         self.min = 20
         self.max = 220
        
@@ -379,7 +361,6 @@ class Menubut(MTWidget):
     def arpegiator(self, *largs):
         m = MTButton(label='buhuh', pos = (400,140))
         self.add_widget(m)
-
         c = self.btn0
         x = c.x
         y = c.y
@@ -403,7 +384,7 @@ class Menubut(MTWidget):
         m.connect('on_value_change',self.bpmSlider_value_change)
         l1.add_widget(m)
         self.add_widget(l1)
-
+         
     ''' event handler for BPM slider's on_value_change '''                                 
     def bpmSlider_value_change(self,value):
         try:
@@ -426,16 +407,16 @@ class Menubut(MTWidget):
         m.connect('on_value_change',self.volumeSlider_value_change)
         l2.add_widget(m)
         self.add_widget(l2)
-                        
+
     ''' event handler for volume slider's on_value_change '''                                 
     def volumeSlider_value_change(self,value):
         try:
             EventManager.getInstance().setVolume(value)
         except: 
             pass
-                        
+        
     def delay(self, *largs):
-        c = self.btn2
+        c = self.btn2 
         x = c.x
         y = c.y
         self.remove_widget(c)
@@ -446,7 +427,7 @@ class Menubut(MTWidget):
         m = Showslider(cls=('simple', 'colored'), orientation='vertical', value=50)
         l3.add_widget(m)
         self.add_widget(l3)
-                    
+                        
     def instruments(self, *largs):
         c = self.btn4
         x = c.x
@@ -458,28 +439,17 @@ class Menubut(MTWidget):
         l4 = MTBoxLayout(orientation='vertical',padding = 10, spacing = 3)
         list = Showinstruments()
         l4.add_widget(list)
-        W = MTWindow()
         self.add_widget(l4)
                        
                 
     
-#
-#    def randomize(self, *largs):
-#        w = self.get_parent_window()
-#        for letter in self.children:
-#            if letter == self.buttons:
-#                continue
-#            letter.do(Animation(pos=map(lambda x: x * random(), w.size),
-#                                f='ease_out_cubic', duration=.5))
 
     
 fl = Menubut()
 w = MTWindow()
 w.add_widget(fl)
-runTouchApp()
+
 
 if __name__ == '__main__':
-    #manager = EventManager.getInstance()
-    #seq1=manager.createSequence()
     runTouchApp()
  

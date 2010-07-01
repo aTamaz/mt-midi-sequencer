@@ -6,6 +6,8 @@ Created on 9 Jun 2010
 import core.audio.EventManager as EventManager
 import core.Constants as Constants
 
+from pymt import *
+
 import pygame
 import pygame.midi
 from gui import myButtonMatrix
@@ -29,13 +31,10 @@ if __name__ == '__main__':
     #seq1=manager.createSequence()
     
     ''' start ella's main screen '''
-    import gui.Severalbuttons7
+    import gui.Mainscreen
     
     ''' button matrix beispiel -> 3 toene schmeissen arpeggiator an '''
     #import gui.myButtonMatrix
     #myButtonMatrix.go(manager.createSequence())
-    
-    ''' hello world beispiel -> slider verstellt bpm '''
-    #import gui.temp.helloworld
-    #manager.createSequence()
-    #gui.temp.helloworld.go()
+
+    runTouchApp()
