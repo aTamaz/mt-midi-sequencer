@@ -28,19 +28,19 @@ additional_css = '''
     bg-color:  rgb(102,205,170);
     border-radius: 20;
     border-radius-precision: .3;
-    font-size: 50;
+    font-size: 5;
     font-weight: bold;
-    font-color: rgb(139,0,139);
+    font-color: rgb(104,34,139);
     slider-border-radius-precision: .3;
     slider-border-radius: 20;
 }
 .pcolored{
-    bg-color: rgb(104,34,139);
+    bg-color: rgb(255,165,0);
     border-radius: 20;
     border-radius-precision: .3;
-    font-size: 40;
+    font-size: 5;
     font-weight: bold;
-    font-color: rgb(255,125,64);
+    font-color: rgb(104,34,139);
     slider-border-radius-precision: .3;
     slider-border-radius: 20;
     
@@ -60,7 +60,7 @@ css_add_sheet(additional_css)
 
 
 current_dir = os.path.dirname(__file__)
-objlist = []
+bubblelist = []
 
 def action_close_menu(menu, w, args, *largs):
     menu.parent.remove_widget(menu)
@@ -77,7 +77,40 @@ def handle_image_move(image, *largs):
             image.pos = (w.width, image.y)
         if image.y > w.height:
             image.pos = (image.x, w.height)
-      
+        if image.x>600 and image.y<160:
+            #print "over the trash"
+            p=MTWindow()
+            p.clear()
+            p=image.get_parent_window()
+            p.remove_widget(image)
+def bubble_activate(image,*largs):
+        print "i pushed it"
+        s=largs[0]
+        
+        s.replace("pic","buh")
+        S=s[0:46]
+        a=s[49]
+        print a
+        if a=="3":
+           print "it is 3"
+           S+"pic33.png"
+           print S
+        img = Loader.image(largs[0])
+        x=image.x
+        y=image.y
+        b = MTScatterImage(image=img, pos=(200,200))
+        w= MTWindow()
+        w.add_widget(b)
+        #falls du eine Idee hast welche ist das Unterschied zwischen diese beide Kode zeilen
+        #Variante1:
+        #S = 'xxxxSPAMxxxxSPAMxxxx'
+        #print S.replace("SPAM", "EGGS", 1)
+        #S + 'buhuhuhu'
+        #print S
+        #Variante2:
+        #word = 'Help' 
+        #print word
+        #print '<' + word*5 + '>'
 
 class MTPhoto(MTKineticItem):
     def __init__(self, **kwargs):
@@ -107,7 +140,14 @@ class MusicBubble(MTWidget):
         y = int(random.uniform(100, 500))
         b = MTScatterImage(image=img, pos=(x,y))
         b.push_handlers(on_move=curry(handle_image_move, b))
-        self.add_widget(b)
+        #wenn du diesen Teil auskommentierst willst du sehen wenn du die Trompete anclickst wird bei jedem klick
+        #neu erzeugt was auch Sinn macht, alerdings ich weiss nicht wie man es visuelle zeigen koennte dass die Bubble aktiv wird
+        # b.push_handlers(on_touch_down=curry(bubble_activate,b,self.filename))
+        w = MTWindow()
+        w.add_widget(b)
+        #falls ich es so mache ich kann es pater nicht loeschen weil ich den self.button nicht mehr
+        #zugreifen kann
+        #weil ich kann keine event in die Klasse Music Bubble definieren, es sagt mir es soll global definiert werden
        # self.button = MTImageButton(filename=self.filename, cls = ('simple'))
         #self.button.touched = False
         
@@ -117,7 +157,6 @@ class MusicBubble(MTWidget):
         #self.add_widget(self.button)
         
         #self.button.pos = (x,y)
-    
 
 
 
@@ -132,9 +171,7 @@ class Showinstruments(MTWidget):
         self.list.pos = (163,270)
         self.add_widget(self.list)
         self.bubbles = []
-        self.Abubbles = []
-        self.touch_positions = {}
-        self.index = 0
+
 
         for p in range(8):
             imgName = os.path.join(current_dir, 'instruments', 'pic%d.png' % (p+1))
@@ -180,62 +217,19 @@ class Showinstruments(MTWidget):
         self.current.selected = True
         a = self.current.filename
         self.m = MusicBubble(filename = a)
-        self.m.push_handlers(on_touch_down =self.bubble_press)
         self.add_widget(self.m)
         self.bubbles.append(self.m)
         W = MTWindow() 
-        self.clear = MTButton(label='Clear', pos = (W.width-50,W.height-50),size = (40,40),cls=('simple'))
-        self.clear.push_handlers(on_press=self.music_clear)
-        self.add_widget(self.clear)
-        
+       
         # make sequence for this instrument
         EventManager.getInstance().createSequence()
         
-    def find_node(self, x, y, touch):
-        for c in self.children:
-            if c in self.bubbles:
-                #print c
-                if c.collide_point(x, y):
-                    #print c.width, c.height,c.pos
-                    print "in colision"
-                    print c
-                    #self.filename = os.path.join(current_dir, 'instruments', 'pic88.png')
-                    #self.button = MTImageButton(filename=self.filename, pos = c.pos)
-                    #self.button.touched = False
-                    #self.add_widget(self.button)
-                    #print touch.id
-                    
-                    
-                    
-                    return c 
-                    self.index = self.index+1
-                    
-                    
-    def bubble_press(self, touch):
-        x, y = self.to_local(*touch.pos)
-        node = self.find_node(x, y, touch)
-        if node != None:
-            self.Abubbles.append(node)
-        print len(self.Abubbles)
-    
+   
         
      
-#    def draw_ui(self):
-#       for p in self.touch_positions:
-#            for pos in self.touch_positions[p][len(self.touch_positions[p])-1:]:
-#                set_color(0.5,0,0.8)
-#                drawCircle((pos[0],pos[1]),25)
-#                for p in self.touch_positions:
-#                    for pos2 in self.touch_positions[p][len(self.touch_positions[p])-1:]:
-#                        print pos2
-#                        err = 30
-#                        set_color(0.5,0,0.8)
-#                        #set_color(random()-0.1,0,random()+0.4)
-#                        #drawLine((pos[0]+err*(random()-random()),pos[1]+err*(random()-random()),pos2[0]+err*(random()-random()),pos2[1]+err*(random()-random())), 15*random())
-#
+
     def on_draw(self):
         super(Showinstruments, self).on_draw()
-        #self.draw_ui()      
        
     def draw(self):
         with DO(gx_matrix, gx_blending):
@@ -249,9 +243,7 @@ class Showinstruments(MTWidget):
         super(Showinstruments, self).draw()
     def ListFade(self,dt):
         self.do(self.fadeout)
-    def music_clear(self, *largs):
-        for a in self.bubbles:
-            self.remove_widget(a)
+    
    
 class Showslider(MTSlider):
     def __init__(self, **kwargs):
@@ -311,15 +303,18 @@ class Menubut(MTWidget):
         imgName = os.path.join(current_dir, 'instruments', 'menu1.png')
         self.object = MTContainer(Image(imgName), pos =(0,100))
         self.add_widget(self.object)
-        self.btn0 = MTButton(label='Arpegiator', size = (100,60), cls=('simple', 'colored'))
+        imgName = os.path.join(current_dir,'instruments','trashcan.png')
+        self.object = MTContainer(Image(imgName),pos = (720,0))
+        self.add_widget(self.object)
+        self.btn0 = MTButton(label='ARPEGIATOR', size = (100,60), cls=('simple', 'colored'))
         self.btn0.push_handlers(on_press=self.arpegiator)
         self.btn1 = MTButton(label='BPM', size = (100,60), cls=('simple', 'colored'))
         self.btn1.push_handlers(on_press=self.bpm)
-        self.btn2 = MTButton(label='Delay', size = (100,60), cls=('simple', 'colored'))
+        self.btn2 = MTButton(label='DELAY', size = (100,60), cls=('simple', 'colored'))
         self.btn2.push_handlers(on_press=self.delay)
-        self.btn3 = MTButton(label='Volume', size = (100,60), cls=('simple', 'colored'))
+        self.btn3 = MTButton(label='VOLUME', size = (100,60), cls=('simple', 'colored'))
         self.btn3.push_handlers(on_press=self.volume)
-        self.btn4 = MTButton(label='Instruments', size = (100,60), cls=('simple', 'colored'))
+        self.btn4 = MTButton(label='INSTRUMENTS', size = (100,60), cls=('simple', 'colored'))
         self.btn4.push_handlers(on_press=self.instruments)
         self.buttons = MTBoxLayout(orientation='vertical',padding = 10, spacing = 3, pos = (30, W.height-450))
         self.buttons.add_widget(self.btn0)
@@ -338,15 +333,18 @@ class Menubut(MTWidget):
         imgName = os.path.join(current_dir, 'instruments', 'menu1.png')
         self.object = MTContainer(Image(imgName), pos =(0,100))
         self.add_widget(self.object)
-        self.btn0 = MTButton(label='Arpegiator', size = (100,60), cls=('simple', 'colored'))
+        imgName = os.path.join(current_dir,'instruments','trashcan.png')
+        self.object = MTContainer(Image(imgName),pos = (720,0))
+        self.add_widget(self.object)
+        self.btn0 = MTButton(label='ARPEGIATOR', size = (100,60), cls=('simple', 'colored'))
         self.btn0.push_handlers(on_press=self.arpegiator)
         self.btn1 = MTButton(label='BPM', size = (100,60), cls=('simple', 'colored'))
         self.btn1.push_handlers(on_press=self.bpm)
-        self.btn2 = MTButton(label='Delay', size = (100,60), cls=('simple', 'colored'))
+        self.btn2 = MTButton(label='DELAY', size = (100,60), cls=('simple', 'colored'))
         self.btn2.push_handlers(on_press=self.delay)
-        self.btn3 = MTButton(label='Volume', size = (100,60), cls=('simple', 'colored'))
+        self.btn3 = MTButton(label='VOLUME', size = (100,60), cls=('simple', 'colored'))
         self.btn3.push_handlers(on_press=self.volume)
-        self.btn4 = MTButton(label='Instruments', size = (100,60), cls=('simple', 'colored'))
+        self.btn4 = MTButton(label='INSTRUMENTS', size = (100,60), cls=('simple', 'colored'))
         self.btn4.push_handlers(on_press=self.instruments)
         self.buttons = MTBoxLayout(orientation='vertical',padding = 10, spacing = 3, pos = (30, W.height-450))
         self.buttons.add_widget(self.btn0)
@@ -365,7 +363,7 @@ class Menubut(MTWidget):
         x = c.x
         y = c.y
         self.remove_widget(c)
-        btn = MTButton(label='Arpegiator', size = (100,60),pos = (x,y), cls=('simple','pcolored'))
+        btn = MTButton(label='ARPEGIATOR', size = (100,60),pos = (x,y), cls=('simple','pcolored'))
         btn.push_handlers(on_press=self.clear)
         self.add_widget(btn)
                         
@@ -397,7 +395,7 @@ class Menubut(MTWidget):
         x = c.x
         y = c.y
         self.remove_widget(c)
-        btn = MTButton(label='Volume', size = (100,60),pos = (x,y), cls=('simple','pcolored'))
+        btn = MTButton(label='VOLUME', size = (100,60),pos = (x,y), cls=('simple','pcolored'))
         btn.push_handlers(on_press=self.clear)
         self.add_widget(btn)
         l2 = MTBoxLayout(orientation='vertical',padding = 10, spacing = 3, pos= (180,263))
@@ -420,7 +418,7 @@ class Menubut(MTWidget):
         x = c.x
         y = c.y
         self.remove_widget(c)
-        btn = MTButton(label='Delay', size = (100,60),pos = (x,y), cls=('simple','pcolored'))
+        btn = MTButton(label='DELAY', size = (100,60),pos = (x,y), cls=('simple','pcolored'))
         btn.push_handlers(on_press=self.clear)
         self.add_widget(btn)
         l3 = MTBoxLayout(orientation='vertical',padding = 10, spacing = 3, pos= (180,263))
@@ -433,7 +431,7 @@ class Menubut(MTWidget):
         x = c.x
         y = c.y
         self.remove_widget(c)
-        btn = MTButton(label='Instruments', size = (100,60),pos = (x,y), cls=('simple','pcolored'))
+        btn = MTButton(label='INSTRUMENTS', size = (100,60),pos = (x,y), cls=('simple','pcolored'))
         btn.push_handlers(on_press=self.clear)
         self.add_widget(btn)
         l4 = MTBoxLayout(orientation='vertical',padding = 10, spacing = 3)
