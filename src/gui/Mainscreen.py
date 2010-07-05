@@ -444,7 +444,7 @@ class Menubut(MTWidget):
 
     
 fl = Menubut()
-w = MTWindow()
+w = getWindow()
 w.add_widget(fl)
 
 

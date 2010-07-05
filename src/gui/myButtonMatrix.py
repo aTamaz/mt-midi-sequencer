@@ -32,36 +32,33 @@ class MTNote:
 
 #################################################################################################
 
-def go(seq):
-    w = MTWindow()
-    
-    keyboard = MTKeyboard()
-    note = MTNote()
-    # Set Button
-    btnSet = MTButton(label='Set', pos=(650,50))
-    
-    # initialize
-    rawNoteDataArray = []
-    for i in xrange(32):
-        rawNoteDataArray.append([])
-        for j in xrange(12):
-            rawNoteDataArray[i].append([])
+w = getWindow()
 
-    ''' Event Handlers '''
-    @btnSet.event
-    def on_press(*largs):
-        print keyboard.getRawNoteData(rawNoteDataArray)
+keyboard = MTKeyboard()
+note = MTNote()
+# Set Button
+btnSet = MTButton(label='Set', pos=(650,50))
 
+# initialize
+rawNoteDataArray = []
+for i in xrange(32):
+    rawNoteDataArray.append([])
+    for j in xrange(12):
+        rawNoteDataArray[i].append([])
+
+''' Event Handlers '''
+@btnSet.event
+def on_press(*largs):
+    print keyboard.getRawNoteData(rawNoteDataArray)
 
 
+''' adding zone '''
+innerwin = MTInnerWindow(size=(605,468), pos=(50,50))
+innerwin.add_widget(keyboard)
+
+w.add_widget(innerwin)
+w.add_widget(btnSet)
 
 
-    ''' adding zone '''
-    innerwin = MTInnerWindow(size=(605,468), pos=(50,50))
-    innerwin.add_widget(keyboard)
-
-    w.add_widget(innerwin)
-    w.add_widget(btnSet)
-    
-
+if __name__ == '__main__':
     runTouchApp()
