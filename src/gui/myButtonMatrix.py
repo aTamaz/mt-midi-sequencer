@@ -20,24 +20,24 @@ class MTNote:
 #################################################################################################
 
 def go(seq):
-    root = MTWidget()
+    w = MTWindow()
+    
     keyboard = MTKeyboard()
-    scat = MTScatterWidget(size = (605,468), pos = (5,5))
     note = MTNote()
-
+    # Set Button
+    btnSet = MTButton(label='Set', pos=(650,50))
+    
+    # initialize
     rawNoteDataArray = []
     for i in xrange(32):
         rawNoteDataArray.append([])
         for j in xrange(12):
             rawNoteDataArray[i].append([])
 
-    # Set Button
-    btnSet = MTButton(label='Set', pos=(650,50))
+    ''' Event Handlers '''
     @btnSet.event
     def on_press(*largs):
         print keyboard.getRawNoteData(rawNoteDataArray)
-    
-    root.add_widget(btnSet)
 
     @keyboard.event
     def on_press(*largs):
@@ -59,7 +59,12 @@ def go(seq):
         touch.grab(keyboard)
         return True
 
-    scat.add_widget(keyboard)
-    root.add_widget(scat)
+    ''' adding zone '''
+    innerwin = MTInnerWindow(size=(605,468), pos=(20,20))
+    innerwin.add_widget(keyboard)
 
-    runTouchApp(root)
+    w.add_widget(innerwin)
+    w.add_widget(btnSet)
+    
+
+    runTouchApp()
