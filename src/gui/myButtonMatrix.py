@@ -39,28 +39,12 @@ def go(seq):
     def on_press(*largs):
         print keyboard.getRawNoteData(rawNoteDataArray)
 
-    @keyboard.event
-    def on_press(*largs):
-        '''
-        largs[0][0] -> x-axis, goes from 0 to 31 (starting in the left low corner)
-        largs[0][1] -> y-axis, goes from 0 to 11
-        largs[0][2] -> 0 / 1, toggles on/off
-        '''
-        if largs[0][2] == 1:
-            seq.setNote(largs[0][1] + 60)
-#            rawNoteDataArray[largs[0][0]][largs[0][1]] = note.length()
-#        else:
-#            rawNoteDataArray[largs[0][0]][largs[0][1]] = []
 
-    @keyboard.event
-    def on_touch_down(touch):
-        if not keyboard.collide_point(*touch.pos):
-            return
-        touch.grab(keyboard)
-        return True
+
+
 
     ''' adding zone '''
-    innerwin = MTInnerWindow(size=(605,468), pos=(20,20))
+    innerwin = MTInnerWindow(size=(605,468), pos=(50,50))
     innerwin.add_widget(keyboard)
 
     w.add_widget(innerwin)
