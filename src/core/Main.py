@@ -10,7 +10,7 @@ from pymt import *
 
 import pygame
 import pygame.midi
-
+import gui.myButtonMatrix as ButtonMatrix
 
 
 if __name__ == '__main__':
@@ -30,9 +30,9 @@ if __name__ == '__main__':
     #seq1=manager.createSequence()
     
     ''' start ella's main screen '''
-    #import gui.Mainscreen
+    import gui.Mainscreen
     
     ''' button matrix beispiel -> 3 toene schmeissen arpeggiator an '''
-    import gui.myButtonMatrix
+    #ButtonMatrix.createButtonMatrix()
     
     runTouchApp()

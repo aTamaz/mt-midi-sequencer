@@ -15,9 +15,13 @@ class MTKeyboard(MTButtonMatrix):
 
     def on_press(self, *largs):
         '''
-        largs[0][0] -> x-axis, goes from 0 to 31 (starting in the left low corner)
-        largs[0][1] -> y-axis, goes from 0 to 11
-        largs[0][2] -> 0 / 1, toggles on/off
+        to read:
+        
+        In largs are tuples of tuples:
+        ((x,y,True/False),....)
+        
+        The inner tuple describes x position, y position and wether the button
+        located at x,y is pressed or not
         '''
         print largs[0]
 #    if largs[0][2] == 1:
@@ -32,33 +36,31 @@ class MTNote:
 
 #################################################################################################
 
-w = getWindow()
+def createButtonMatrix():
+    w = getWindow()
+    
+    keyboard = MTKeyboard()
+    note = MTNote()
+    # Set Button
+    btnSet = MTButton(label='Set', pos=(650,50))
+    
+    # initialize
+    rawNoteDataArray = []
+    for i in xrange(32):
+        rawNoteDataArray.append([])
+        for j in xrange(12):
+            rawNoteDataArray[i].append([])
+    
+    ''' Event Handlers '''
+    @btnSet.event
+    def on_press(*largs):
+        print keyboard.getRawNoteData(rawNoteDataArray)
+    
+    
+    ''' adding zone '''
+    innerwin = MTInnerWindow(size=(605,468), pos=(50,50))
+    innerwin.add_widget(keyboard)
+    
+    w.add_widget(innerwin)
+    w.add_widget(btnSet)
 
-keyboard = MTKeyboard()
-note = MTNote()
-# Set Button
-btnSet = MTButton(label='Set', pos=(650,50))
-
-# initialize
-rawNoteDataArray = []
-for i in xrange(32):
-    rawNoteDataArray.append([])
-    for j in xrange(12):
-        rawNoteDataArray[i].append([])
-
-''' Event Handlers '''
-@btnSet.event
-def on_press(*largs):
-    print keyboard.getRawNoteData(rawNoteDataArray)
-
-
-''' adding zone '''
-innerwin = MTInnerWindow(size=(605,468), pos=(50,50))
-innerwin.add_widget(keyboard)
-
-w.add_widget(innerwin)
-w.add_widget(btnSet)
-
-
-if __name__ == '__main__':
-    runTouchApp()

@@ -10,6 +10,7 @@ import math
 from random import randint, random
 import random
 import core.audio.EventManager as EventManager
+import myButtonMatrix as ButtonMatrix
 
 IS_PYMT_PLUGIN = True
 PLUGIN_TITLE = 'Menu Music'
@@ -125,26 +126,46 @@ class MTPhoto(MTKineticItem):
         self.image.scale= self.scale
         self.image.draw()
         
-class MusicBubble(MTWidget):
+
+
+
+class MusicBubble(MTScatterImage):
     def __init__(self, **kwargs):
-        super(MusicBubble, self).__init__(**kwargs)
-        self.bgcolor = (0,0,0,1)
-        self.color = (0,1,0,1.0)
-        self.touch_positions = {}
+        #super(MusicBubble, self).__init__(**kwargs)
+        #self.bgcolor = (0,0,0,1)
+        #self.color = (0,1,0,1.0)
+        #self.touch_positions = {}
         self.filename = kwargs.get('filename')
         #print self.filename
         img = Loader.image(self.filename)
-        self.scale = 0.8
-        w = MTWindow()
+        #self.scale = 0.8
+        #w = MTWindow()
+        
+        '''
+        to read
+        
+        hier ist wieder das ding mit dem MTWindow(). Finger weg davon!
+        
+        at Ella: du machst das zu umstaendlich. zu viel von aussen. du musst die
+        funktionen in die objekte stecken. wie du siehst hast du hier riesen
+        boiler code und steuerst viel ueber curry paste und push_handlers.
+        Ist doch viel gechillter hier drinne die Handler zu schreiben. 
+        
+        ich hoffe ich hab nichts zerstoert. aber hab dafuer aufgeraumt.
+        '''
+        
+        
+        
         x = int(random.uniform(300, 600))
         y = int(random.uniform(100, 500))
-        b = MTScatterImage(image=img, pos=(x,y))
-        b.push_handlers(on_move=curry(handle_image_move, b))
+        #super(image=img, pos=(x,y))
+        super(MusicBubble, self).__init__(image=img, pos=(x,y), scale=0.8)
+        #b.push_handlers(on_move=curry(handle_image_move, b))
         #wenn du diesen Teil auskommentierst willst du sehen wenn du die Trompete anclickst wird bei jedem klick
         #neu erzeugt was auch Sinn macht, alerdings ich weiss nicht wie man es visuelle zeigen koennte dass die Bubble aktiv wird
         # b.push_handlers(on_touch_down=curry(bubble_activate,b,self.filename))
-        w = MTWindow()
-        w.add_widget(b)
+        #w = MTWindow()
+        #w.add_widget(b)
         #falls ich es so mache ich kann es pater nicht loeschen weil ich den self.button nicht mehr
         #zugreifen kann
         #weil ich kann keine event in die Klasse Music Bubble definieren, es sagt mir es soll global definiert werden
@@ -157,8 +178,28 @@ class MusicBubble(MTWidget):
         #self.add_widget(self.button)
         
         #self.button.pos = (x,y)
+        
 
+        
+    def on_touch_down(self, touch):
+        '''
+        to read
+        
+        hier wird beispielhaft die Buttonmatrix geladen. Das Aufziehen der
+        Matrix ist zwar n schoenes gimmick, aber das geht auch so.
+        
+        leider kann man die bubble nicht bewegen. das ist hier nur da um euch
+        das zu zeigen. wenn ihr das wieder bewegen moechtet, dann loescht diese
+        Methode
+        '''
+        if not self.collide_point(touch.x, touch.y):
+            # not my touch
+            return
+        
+        ButtonMatrix.createButtonMatrix()
+        
 
+        
 
 class Showinstruments(MTWidget):
     def __init__(self, **kwargs):
@@ -217,9 +258,30 @@ class Showinstruments(MTWidget):
         self.current.selected = True
         a = self.current.filename
         self.m = MusicBubble(filename = a)
-        self.add_widget(self.m)
+        
+        '''
+        to read
+        
+        Ella hat die MusicBubble in ShowInstruments gepackt. Das macht keinen
+        Sinn! Das muss in das Window eingehaengt werden. Andernfalls kommen die 
+        on_press handler nicht durch weil an der falschen stelle haengt. 
+        '''
+        getWindow().add_widget(self.m)
+        #self.add_widget(self.m) 
+        
+        
         self.bubbles.append(self.m)
-        W = MTWindow() 
+        
+        '''
+        to read
+        
+        ich weiss nicht wofuer hier ein window erzeugt werden sollte, aber das ist
+        nicht gut neue sachen in neue windows zu stecken. jedes window ist ein
+        input consumer. gibt es viele windows, gibts auch viele komplikationen
+        
+        wenn was ins hauptfenster soll, dann wie oben per getWindow() einhaengen.
+        '''
+        #W = MTWindow() 
        
         # make sequence for this instrument
         EventManager.getInstance().createSequence()
@@ -448,6 +510,5 @@ w = getWindow()
 w.add_widget(fl)
 
 
-if __name__ == '__main__':
-    runTouchApp()
+
  
