@@ -1,5 +1,5 @@
 from pymt import *
-#import core.audio.Sequence
+import core.audio.Sequence
 
 class MTKeyboard(MTButtonMatrix):
     def __init__(self, **kwargs):
