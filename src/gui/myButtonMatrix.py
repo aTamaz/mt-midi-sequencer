@@ -70,12 +70,17 @@ def go(seq):
 #        else:
 #            rawNoteDataArray[largs[0][0]][largs[0][1]] = []
 
-    @scat.event
+#    @scat.event
+#    def on_touch_down(touch):
+#       if scat.collide_point(touch.x, touch.y) and not keyboard.collide_point(touch.x, touch.y):
+#            return
+
+    @keyboard.event
     def on_touch_down(touch):
-        if scat.collide_point(touch.x, touch.y) and not keyboard.collide_point(touch.x, touch.y):
-#           super(MTScatterWidget, scat).keyboard(touch.x, touch.y)
-            print 'hi'
+        if not keyboard.collide_point(*touch.pos):
             return
+        touch.grab(keyboard)
+        return True
 
     scat.add_widget(keyboard)
     root.add_widget(scat)
