@@ -1,5 +1,5 @@
 from pymt import *
-import core.audio.Sequence
+#import core.audio.Sequence
 
 class MTKeyboard(MTButtonMatrix):
     def __init__(self, **kwargs):
@@ -49,7 +49,7 @@ def go(seq):
         for j in xrange(12):
             rawNoteDataArray[i].append([])
 
-     Set Button
+    # Set Button
     btnSet = MTButton(label='Set', pos=(650,50))
     @btnSet.event
     def on_press(*largs):
