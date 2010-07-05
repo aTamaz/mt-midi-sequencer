@@ -13,23 +13,6 @@ class MTKeyboard(MTButtonMatrix):
     def getRawNoteData(self, rawNoteDataArray):
         return rawNoteDataArray
 
-    def setSize(self, size):
-        self.size = size
-        self.draw()
-
-#class MTScatterFrame(MTScatterWidget):
-#    def __init__(self, **kwargs):
-#        super(MTScatterFrame, self).__init__(**kwargs)
-#        self.pos = (55,55)
-#        self.size = (605,470)
-
-#    def on_touch_down(self, touch):
-#       if scat.collide_point(touch.x, touch.y) and not keyboard.collide_point(touch.x, touch.y):
-#            super(MTKeyboard, keyboard).on_press(touch.x, touch.y)
-#            print 'hi'
-#	else:
-#		print 'hihi'
-
 class MTNote:
     def length(self):
         return 1
@@ -39,7 +22,6 @@ class MTNote:
 def go(seq):
     root = MTWidget()
     keyboard = MTKeyboard()
-    #scat = MTScatterFrame()
     scat = MTScatterWidget(size = (605,468), pos = (5,5))
     note = MTNote()
 
@@ -69,11 +51,6 @@ def go(seq):
 #            rawNoteDataArray[largs[0][0]][largs[0][1]] = note.length()
 #        else:
 #            rawNoteDataArray[largs[0][0]][largs[0][1]] = []
-
-#    @scat.event
-#    def on_touch_down(touch):
-#       if scat.collide_point(touch.x, touch.y) and not keyboard.collide_point(touch.x, touch.y):
-#            return
 
     @keyboard.event
     def on_touch_down(touch):
