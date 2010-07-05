@@ -13,6 +13,19 @@ class MTKeyboard(MTButtonMatrix):
     def getRawNoteData(self, rawNoteDataArray):
         return rawNoteDataArray
 
+    def on_press(self, *largs):
+        '''
+        largs[0][0] -> x-axis, goes from 0 to 31 (starting in the left low corner)
+        largs[0][1] -> y-axis, goes from 0 to 11
+        largs[0][2] -> 0 / 1, toggles on/off
+        '''
+        print largs[0]
+#    if largs[0][2] == 1:
+#        seq.setNote(largs[0][1] + 60)
+#            rawNoteDataArray[largs[0][0]][largs[0][1]] = note.length()
+#        else:
+#            rawNoteDataArray[largs[0][0]][largs[0][1]] = []
+
 class MTNote:
     def length(self):
         return 1
