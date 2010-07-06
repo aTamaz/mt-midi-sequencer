@@ -8,7 +8,7 @@ from pymt import *
 from OpenGL.GL import *
 import math
 from random import randint, random
-import random
+import random, time
 import core.audio.EventManager as EventManager
 import myButtonMatrix as ButtonMatrix
 
@@ -131,76 +131,45 @@ class MTPhoto(MTKineticItem):
 
 class MusicBubble(MTScatterImage):
     def __init__(self, **kwargs):
-        #super(MusicBubble, self).__init__(**kwargs)
-        #self.bgcolor = (0,0,0,1)
-        #self.color = (0,1,0,1.0)
-        #self.touch_positions = {}
         self.filename = kwargs.get('filename')
-        #print self.filename
         img = Loader.image(self.filename)
-        #self.scale = 0.8
-        #w = MTWindow()
-        
-        '''
-        to read
-        
-        hier ist wieder das ding mit dem MTWindow(). Finger weg davon!
-        
-        at Ella: du machst das zu umstaendlich. zu viel von aussen. du musst die
-        funktionen in die objekte stecken. wie du siehst hast du hier riesen
-        boiler code und steuerst viel ueber curry paste und push_handlers.
-        Ist doch viel gechillter hier drinne die Handler zu schreiben. 
-        
-        ich hoffe ich hab nichts zerstoert. aber hab dafuer aufgeraumt.
-        '''
-        
-        
-        
+
         x = int(random.uniform(300, 600))
         y = int(random.uniform(100, 500))
-        #super(image=img, pos=(x,y))
-        super(MusicBubble, self).__init__(image=img, pos=(x,y), scale=0.8)
-        #b.push_handlers(on_move=curry(handle_image_move, b))
-        #wenn du diesen Teil auskommentierst willst du sehen wenn du die Trompete anclickst wird bei jedem klick
-        #neu erzeugt was auch Sinn macht, alerdings ich weiss nicht wie man es visuelle zeigen koennte dass die Bubble aktiv wird
-        # b.push_handlers(on_touch_down=curry(bubble_activate,b,self.filename))
-        #w = MTWindow()
-        #w.add_widget(b)
-        #falls ich es so mache ich kann es pater nicht loeschen weil ich den self.button nicht mehr
-        #zugreifen kann
-        #weil ich kann keine event in die Klasse Music Bubble definieren, es sagt mir es soll global definiert werden
-       # self.button = MTImageButton(filename=self.filename, cls = ('simple'))
-        #self.button.touched = False
         
-        #self.button.connect('on_touch_down', curry(self.music_activate, self.button))
-        #self.button.connect('on_touch_up', curry(self.music_deactivate, self.button))
-        #self.button.push_handler(on_touch_down=self.music_activate)
-        #self.add_widget(self.button)
-        
-        #self.button.pos = (x,y)
-        
+        super(MusicBubble, self).__init__(image=img, pos=(x,y), scale=0.8, **kwargs)
+        self.register_event_type('on_tap')
 
+    def on_tap(self, touch):
+        ButtonMatrix.createButtonMatrix()
+                
     def on_touch_down(self, touch):
-        self.touch_pos = touch.pos
-    
-    # At the moment, the ButtonMatrix appears after a simple tap, rather than after a pinch-gesture. 
+        # if touch is on teh widget remeber the time
+        if self.collide_point(*touch.pos):
+            touch.userdata['tap_widget'] = self
+            touch.userdata['start_time'] = time.time()        
+        
+        #return same as super event handler to get normal manipulations
+        return super(MusicBubble, self).on_touch_down(touch)
+        
     def on_touch_up(self, touch):
-        # TODO check, if we've dropped into the trash
-        
-        # if touch_up is at the same place, as touch_down was: 
-        if self.touch_pos == touch.pos:
-            if not self.collide_point(touch.x, touch.y):
-                # not my touch
-                return
-        
-            ButtonMatrix.createButtonMatrix()
+        #if teh touch was tapped, it has start time set,
+        #so check if it was short enough to dispatch event
+        if touch.userdata.get('tap_widget') == self:
+            start_time = touch.userdata['start_time']
+            stop_time = time.time()
+            if (stop_time - start_time) < 0.1:
+                start_time=0
+                self.dispatch_event('on_tap', touch)
+                
+        ''' TODO check, if we've dropped into the trash '''
+
+        #return same as super event handler to get normal manipulations
+        return super(MusicBubble, self).on_touch_up(touch)
         
     def on_touch_move(self, touch):
-        # TODO check, if we're leaving the allowed area (e.g. we drag on the menu).
-        self.pos = touch.pos
-        
-        
-
+        ''' TODO check, if we're leaving the allowed area (e.g. we drag on the menu). '''
+        pass
         
 
 class Showinstruments(MTWidget):
