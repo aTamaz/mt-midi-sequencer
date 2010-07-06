@@ -180,23 +180,25 @@ class MusicBubble(MTScatterImage):
         #self.button.pos = (x,y)
         
 
-        
     def on_touch_down(self, touch):
-        '''
-        to read
+        self.touch_pos = touch.pos
+    
+    # At the moment, the ButtonMatrix appears after a simple tap, rather than after a pinch-gesture. 
+    def on_touch_up(self, touch):
+        # TODO check, if we've dropped into the trash
         
-        hier wird beispielhaft die Buttonmatrix geladen. Das Aufziehen der
-        Matrix ist zwar n schoenes gimmick, aber das geht auch so.
+        # if touch_up is at the same place, as touch_down was: 
+        if self.touch_pos == touch.pos:
+            if not self.collide_point(touch.x, touch.y):
+                # not my touch
+                return
         
-        leider kann man die bubble nicht bewegen. das ist hier nur da um euch
-        das zu zeigen. wenn ihr das wieder bewegen moechtet, dann loescht diese
-        Methode
-        '''
-        if not self.collide_point(touch.x, touch.y):
-            # not my touch
-            return
+            ButtonMatrix.createButtonMatrix()
         
-        ButtonMatrix.createButtonMatrix()
+    def on_touch_move(self, touch):
+        # TODO check, if we're leaving the allowed area (e.g. we drag on the menu).
+        self.pos = touch.pos
+        
         
 
         
