@@ -169,7 +169,7 @@ class MusicBubble(MTScatterImage):
         
     def on_touch_move(self, touch):
         ''' TODO check, if we're leaving the allowed area (e.g. we drag on the menu). '''
-        pass
+        return super(MusicBubble, self).on_touch_move(touch)
         
 
 class Showinstruments(MTWidget):
