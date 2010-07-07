@@ -136,7 +136,10 @@ class MusicBubble(MTScatterImage):
 
         x = int(random.uniform(300, 600))
         y = int(random.uniform(100, 500))
-        
+
+        # make sequence for this instrument
+        self.seq = EventManager.getInstance().createSequence()
+                
         # this is used to ensure that the on_touch_up handler just
         # executes one time. see on_touch_up event handler
         self.touch_up_oneTime = 0.0
@@ -184,7 +187,9 @@ class MusicBubble(MTScatterImage):
             start_time=0
             self.dispatch_event('on_tap', touch)
             
-        ''' TODO check, if we've dropped into the trash '''
+        # check, if we've dropped into the trash
+        if touch.x>600 and touch.y<100:
+            self.__destructor()
 
         #return same as super event handler to get normal manipulations
         return super(MusicBubble, self).on_touch_up(touch)
@@ -192,6 +197,15 @@ class MusicBubble(MTScatterImage):
     def on_touch_move(self, touch):
         ''' TODO check, if we're leaving the allowed area (e.g. we drag on the menu). '''
         return super(MusicBubble, self).on_touch_move(touch)
+    
+    ''' use this to delete this biubble '''
+    def __destructor(self):
+        # remove bubble from window
+        getWindow().remove_widget(self)
+        # delete sequence
+        self.seq.delete()
+        # destroy self
+        del self
         
 
 class Showinstruments(MTWidget):
@@ -276,8 +290,7 @@ class Showinstruments(MTWidget):
         '''
         #W = MTWindow() 
        
-        # make sequence for this instrument
-        EventManager.getInstance().createSequence()
+        
         
    
         

@@ -20,6 +20,11 @@ class Sequence():
 		self.id = int(kwargs.get('id'))
 		self.__logging = kwargs.get('logging')
 		self.__Arpeggiator = Arpeggiator.Arpeggiator()
+		
+		# get reference to manager. if no -> exception
+		self.manager=kwargs.get('manager')
+		if self.manager==None:
+			raise Exception('Sequence must be instantiated with an associated EventManager!')
 
 		# for internal clock
 		self.__internalTick=0
@@ -90,7 +95,13 @@ class Sequence():
 			print self.note3
 			print self.__playdata
 	
+	''' TODO check if this still needed and delete if not '''
 	def exchange(self, note1, note2):
 		tmp = note2
 		note2 = note1
 		note1 = tmp
+		
+	''' deletes this sequence in the right way '''
+	def delete(self):
+		self.manager.unregister(self)
+		del self
