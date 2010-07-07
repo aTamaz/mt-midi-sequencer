@@ -137,6 +137,10 @@ class MusicBubble(MTScatterImage):
         x = int(random.uniform(300, 600))
         y = int(random.uniform(100, 500))
         
+        # this is used to ensure that the on_touch_up handler just
+        # executes one time. see on_touch_up event handler
+        self.touch_up_oneTime = 0.0
+        
         super(MusicBubble, self).__init__(image=img, pos=(x,y), scale=0.8, **kwargs)
         self.register_event_type('on_tap')
 
@@ -144,24 +148,42 @@ class MusicBubble(MTScatterImage):
         ButtonMatrix.createButtonMatrix()
                 
     def on_touch_down(self, touch):
-        # if touch is on teh widget remeber the time
-        if self.collide_point(*touch.pos):
-            touch.userdata['tap_widget'] = self
-            touch.userdata['start_time'] = time.time()        
+        # check if the touch is inside the widget
+        if not self.collide_point(*touch.pos):
+            return super(MusicBubble, self).on_touch_down(touch)
+        
+        # remember time to tell if it is a tap or move    
+        touch.userdata['tap_widget'] = self
+        touch.userdata['start_time'] = time.time()        
         
         #return same as super event handler to get normal manipulations
         return super(MusicBubble, self).on_touch_down(touch)
         
     def on_touch_up(self, touch):
+        '''
+        EventSystem dispatches this event some times twice per
+        on_touch_down it's result is: on_tap event will be fired
+        2 time alltough I just tapped one time.
+        
+        This ensures that only one dispatch will be served.
+        '''
+        if ((time.time()-self.touch_up_oneTime)<0.2):
+            return super(MusicBubble, self).on_touch_up(touch)
+        else:
+            self.touch_up_oneTime = time.time()
+        
+        # is it my touch?
+        if not touch.userdata.get('tap_widget') == self:
+            return super(MusicBubble, self).on_touch_up(touch)
+        
         #if teh touch was tapped, it has start time set,
-        #so check if it was short enough to dispatch event
-        if touch.userdata.get('tap_widget') == self:
-            start_time = touch.userdata['start_time']
-            stop_time = time.time()
-            if (stop_time - start_time) < 0.1:
-                start_time=0
-                self.dispatch_event('on_tap', touch)
-                
+        #so check if it was short enough to dispatch event        
+        start_time = touch.userdata['start_time']
+        stop_time = time.time()
+        if (stop_time - start_time) < 0.2:            
+            start_time=0
+            self.dispatch_event('on_tap', touch)
+            
         ''' TODO check, if we've dropped into the trash '''
 
         #return same as super event handler to get normal manipulations
@@ -475,10 +497,10 @@ class Menubut(MTWidget):
                 
     
 
-    
-fl = Menubut()
-w = getWindow()
-w.add_widget(fl)
+def createMainscreen():    
+    fl = Menubut()
+    w = getWindow()
+    w.add_widget(fl)
 
 
 
