@@ -3,6 +3,7 @@ import Arpeggiator
 import pygame
 import time
 import random
+import core.Constants as Constants
 
 '''
 - Class: Sequence
@@ -30,17 +31,22 @@ class Sequence():
 		self.__internalTick=0
 		
 		self.instrument = 0
-		
+		self.channel = 0
+	
+		# this is used to send off events for all switched on notes and then die
+		self.__die_next_tick=False
+		self.__die_now=False
+		self.__die_notes=[]
+			
 		self.note1 = 0
 		self.note2 = 0
 		self.note3 = 0
 		
-		'''
 		# create an empty playdata:
-		self.__playdata = []
-		for i in range(64):
-			self.__playdata.append([])
-		'''
+		self.__on_notes = []
+		for i in range(0,127):
+			self.__on_notes.append(False)
+
 		# specification for __playdata structure: http://wiki.github.com/timlandgraf/multitouch/234-midi-events-datenhaltung
 
 		if(self.id==0):
@@ -53,6 +59,16 @@ class Sequence():
 
 	''' callback method for exposing music information '''
 	def getMidiData(self,tick):
+		# if Sequence has to die, play off notes for all switched on notes and
+		# unregister and die
+		if (self.__die_now):
+			self.manager.unregister(self)
+			del self
+			return None
+		if (self.__die_next_tick):
+			self.__die_now=True
+			return self.__die_notes
+		
 		# if sequence is shorter than the general sequence length do nothing
 		if(tick>=len(self.__playdata)):
 			print 'ausgelassen'
@@ -67,7 +83,19 @@ class Sequence():
 		
 		output = []
 		for item in self.__playdata[index]:
+			# instrument overwrite
 			item[0] = int(self.instrument)
+			
+			# channel overwrite
+			item[1] = int(self.channel)
+			
+			note = item[2]
+			# refresh on notes so we know which do switch off when swtching this sequence off
+			if (self.__on_notes[note]):
+				self.__on_notes[note]=False
+			else:
+				self.__on_notes[note]=True
+				
 			output.append(item)
 			
 		return output
@@ -121,21 +149,9 @@ class Sequence():
 	''' deletes this sequence in the right way '''
 	def delete(self):
 		self.__log('deleting sequence')
-		self.manager.unregister(self)
 		
-		print 'show ugh agh'
-		channel = 1
-		
-		timeStamp=pygame.midi.time()
-		 
-		''' TODO dieses all notes off funktioniert noch nicht '''
-		self.manager.midi_out.write([[[176 + channel, 123, 0], timeStamp]])
-		
-		
-		
-		
-		
-		
-		
-		
-		del self
+		for i in range(0,127):
+			if (self.__on_notes[i]):
+				self.__die_notes.append([self.instrument,self.channel,i,0,0])
+				
+		self.__die_next_tick=True
