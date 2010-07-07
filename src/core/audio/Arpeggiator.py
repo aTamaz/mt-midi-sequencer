@@ -15,13 +15,15 @@ class Arpeggiator():
 		OFF = 0		# note off
 
 		if a > b or b > c or a < 60 or a > 72 or b < 60 or b > 72 or c < 60 or c > 72 or loopTimes < 1:
-			print "Arpeggio generation failed."
+			#print "Arpeggio generation failed."
 			return None
 
 		if(getRandom):
 			# random instrument and channel
 			ins = random.randint(0, 127)
 			cha=random.randint(0, 15)
+			# debug for all notes off
+			cha=1
 		else:
 			ins=1
 			cha=1
@@ -69,12 +71,12 @@ class Arpeggiator():
 		loop=None
 		i=1
 		while(loop==None):
-			print 'RAANANDOM Attempt ' + str(i)
+			#print 'RAANANDOM Attempt ' + str(i)
 			i=i+1
 			a = random.randint(61, 70)
 			b = random.randint(61, 70)
 			c = random.randint(61, 70)
-			print a,b,c
+			#print a,b,c
 			loop = self.getLoop(a,b,c)
 
 		return loop

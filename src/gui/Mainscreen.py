@@ -66,24 +66,7 @@ bubblelist = []
 def action_close_menu(menu, w, args, *largs):
     menu.parent.remove_widget(menu)
     del menu
-def handle_image_move(image, *largs):
-        w = image.get_parent_window()
-        if not w:
-            return
-        if image.x < 0:
-            image.pos = (0, image.y)
-        if image.y < 0:
-                image.pos = (image.x, 0)
-        if image.x > w.width:
-            image.pos = (w.width, image.y)
-        if image.y > w.height:
-            image.pos = (image.x, w.height)
-        if image.x>600 and image.y<160:
-            #print "over the trash"
-            p=MTWindow()
-            p.clear()
-            p=image.get_parent_window()
-            p.remove_widget(image)
+
 def bubble_activate(image,*largs):
         print "i pushed it"
         s=largs[0]
@@ -131,6 +114,7 @@ class MTPhoto(MTKineticItem):
 
 class MusicBubble(MTScatterImage):
     def __init__(self, **kwargs):
+        kwargs.setdefault('instrument', 0)
         self.filename = kwargs.get('filename')
         img = Loader.image(self.filename)
 
@@ -139,6 +123,8 @@ class MusicBubble(MTScatterImage):
 
         # make sequence for this instrument
         self.seq = EventManager.getInstance().createSequence()
+        ''' TODO auswahl des instruments muss hier noch rein '''
+        self.seq.setInstrument(kwargs.get('instrument'))
                 
         # this is used to ensure that the on_touch_up handler just
         # executes one time. see on_touch_up event handler
@@ -188,6 +174,7 @@ class MusicBubble(MTScatterImage):
             self.dispatch_event('on_tap', touch)
             
         # check, if we've dropped into the trash
+        ''' TODO verbessern mit self.collide(muelleimer) '''
         if touch.x>600 and touch.y<100:
             self.__destructor()
 
@@ -264,7 +251,13 @@ class Showinstruments(MTWidget):
         self.current = item
         self.current.selected = True
         a = self.current.filename
-        self.m = MusicBubble(filename = a)
+        
+        # get instrument no. from filename
+        instrument = int(a[len(a)-5])
+        # transfer this number to general midi instrument numbers
+        instrDict = {1:117, 2:66, 3:59, 4:1, 5:41, 6:26, 7:28, 8:47} 
+        
+        self.m = MusicBubble(filename = a, instrument=instrDict[instrument])
         
         '''
         to read

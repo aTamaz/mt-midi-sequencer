@@ -1,6 +1,6 @@
 
 import Arpeggiator
-
+import pygame
 import time
 import random
 
@@ -28,6 +28,8 @@ class Sequence():
 
 		# for internal clock
 		self.__internalTick=0
+		
+		self.instrument = 0
 		
 		self.note1 = 0
 		self.note2 = 0
@@ -62,13 +64,28 @@ class Sequence():
 		index=tick
 
 		self.__log('getting data for tick ' + str(tick) + ' at position ' + str(index))
-		return self.__playdata[index]
+		
+		output = []
+		for item in self.__playdata[index]:
+			item[0] = int(self.instrument)
+			output.append(item)
+			
+		return output
 
 	''' tunnel for log messages '''
 	def __log(self, msg):
 		if(self.__logging):
 			print 'Sequence <'+str(self.id)+'>:\t' + msg
 			
+	def setInstrument(self, instr):
+		if (int(instr) < 0 or int(instr) > 127):
+			return
+		
+		self.instrument = instr
+		
+		''' TODO add effect to playdata storage '''
+		self.__log('Sequence was set to instrument ' + str(instr))
+		
 			
 	def setNote(self, note):
 		if self.note1 == 0:
@@ -103,5 +120,22 @@ class Sequence():
 		
 	''' deletes this sequence in the right way '''
 	def delete(self):
+		self.__log('deleting sequence')
 		self.manager.unregister(self)
+		
+		print 'show ugh agh'
+		channel = 1
+		
+		timeStamp=pygame.midi.time()
+		 
+		''' TODO dieses all notes off funktioniert noch nicht '''
+		self.manager.midi_out.write([[[176 + channel, 123, 0], timeStamp]])
+		
+		
+		
+		
+		
+		
+		
+		
 		del self
