@@ -35,6 +35,6 @@ if __name__ == '__main__':
     Mainscreen.createMainscreen()
     
     ''' button matrix beispiel '''
-    #myButtonMatrix.createButtonMatrix()
+    #myButtonMatrix.NotesMatrix()
     
     runTouchApp()
