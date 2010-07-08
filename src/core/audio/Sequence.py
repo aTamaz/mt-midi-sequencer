@@ -56,6 +56,8 @@ class Sequence():
 			# all others are random arpgeggiator
 			self.__playdata = self.__Arpeggiator.getRandomLoop()
 	
+	def getPlaydata(self):
+		return self.__playdata
 
 	''' callback method for exposing music information '''
 	def getMidiData(self,tick):

@@ -134,7 +134,8 @@ class MusicBubble(MTScatterImage):
         self.register_event_type('on_tap')
 
     def on_tap(self, touch):
-        ButtonMatrix.createButtonMatrix()
+        #matrix = ButtonMatrix.createButtonMatrix()
+        matrix = ButtonMatrix.NotesMatrix(sequence=self.seq)        
                 
     def on_touch_down(self, touch):
         # check if the touch is inside the widget
