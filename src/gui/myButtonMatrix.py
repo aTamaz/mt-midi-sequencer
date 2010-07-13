@@ -11,18 +11,10 @@ class MTKeyboard(MTButtonMatrix):
         self.downcolor = (0, .5, 1, 1)
 
     def getRawNoteData(self, rawNoteDataArray):
+        rawNoteDataArray[largs[0][0]][largs[0][1]] = lengthArray[0]
         return rawNoteDataArray
 
     def on_press(self, *largs):
-        '''
-        to read:
-        
-        In largs are tuples of tuples:
-        ((x,y,True/False),....)
-        
-        The inner tuple describes x position, y position and wether the button
-        located at x,y is pressed or not
-        '''
         print largs[0]
 #    if largs[0][2] == 1:
 #        seq.setNote(largs[0][1] + 60)
@@ -45,11 +37,11 @@ def createButtonMatrix():
     btnSet = MTButton(label='Set', pos=(650,50))
     
     # initialize
-    rawNoteDataArray = []
-    for i in xrange(32):
-        rawNoteDataArray.append([])
-        for j in xrange(12):
-            rawNoteDataArray[i].append([])
+#    rawNoteDataArray = []
+#    for i in xrange(32):
+#        rawNoteDataArray.append([])
+#        for j in xrange(12):
+#            rawNoteDataArray[i].append([])
     
     ''' Event Handlers '''
     @btnSet.event
