@@ -54,7 +54,7 @@ xyslider.colored,
 slider.colored {
     bg-color: rgba(75, 0, 130, 150);
 }
-'''  
+'''
 
 css_add_sheet(additional_css)
 
@@ -103,7 +103,7 @@ class MTPhoto(MTKineticItem):
         self.filename = kwargs.get('filename')
         self.image    = pymt.Image(self.filename)
         self.scale = 1   
-
+    
     def draw(self):
         self.image.pos  = self.pos
         self.image.scale= self.scale
@@ -117,26 +117,26 @@ class MusicBubble(MTScatterImage):
         kwargs.setdefault('instrument', 0)
         self.filename = kwargs.get('filename')
         img = Loader.image(self.filename)
-
+        
         x = int(random.uniform(300, 600))
         y = int(random.uniform(100, 500))
-
+        
         # make sequence for this instrument
         self.seq = EventManager.getInstance().createSequence()
         ''' TODO auswahl des instruments muss hier noch rein '''
         self.seq.setInstrument(kwargs.get('instrument'))
-                
+        
         # this is used to ensure that the on_touch_up handler just
         # executes one time. see on_touch_up event handler
         self.touch_up_oneTime = 0.0
         
         super(MusicBubble, self).__init__(image=img, pos=(x,y), scale=0.8, **kwargs)
         self.register_event_type('on_tap')
-
+    
     def on_tap(self, touch):
         #matrix = ButtonMatrix.createButtonMatrix()
-        matrix = ButtonMatrix.NotesMatrix(sequence=self.seq)        
-                
+        matrix = ButtonMatrix.NotesMatrix(sequence=self.seq)
+    
     def on_touch_down(self, touch):
         # check if the touch is inside the widget
         if not self.collide_point(*touch.pos):
@@ -153,7 +153,7 @@ class MusicBubble(MTScatterImage):
         '''
         EventSystem dispatches this event some times twice per
         on_touch_down it's result is: on_tap event will be fired
-        2 time alltough I just tapped one time.
+        2 time although I just tapped one time.
         
         This ensures that only one dispatch will be served.
         '''
@@ -166,11 +166,11 @@ class MusicBubble(MTScatterImage):
         if not touch.userdata.get('tap_widget') == self:
             return super(MusicBubble, self).on_touch_up(touch)
         
-        #if teh touch was tapped, it has start time set,
-        #so check if it was short enough to dispatch event        
+        #if the touch was tapped, it has start time set,
+        #so check if it was short enough to dispatch event
         start_time = touch.userdata['start_time']
         stop_time = time.time()
-        if (stop_time - start_time) < 0.2:            
+        if (stop_time - start_time) < 0.2:
             start_time=0
             self.dispatch_event('on_tap', touch)
             
@@ -207,18 +207,18 @@ class Showinstruments(MTWidget):
         self.list.pos = (163,270)
         self.add_widget(self.list)
         self.bubbles = []
-
-
+        
+        
         for p in range(8):
             imgName = os.path.join(current_dir, 'instruments', 'pic%d.png' % (p+1))
             item = MTPhoto(filename = imgName )
             item.connect('on_press', curry(self.on_item_press, item))
             self.list.add_widget(item)
-       
-
+        
+        
         # states
         self.current = None
-        self.animation = None       
+        self.animation = None
         self.alpha = 0.00
         self.red = 0.7
         self.green = 0.4
@@ -227,15 +227,15 @@ class Showinstruments(MTWidget):
         self.highlightred = self.red * 1.25
         if(self.highlightred > 1):
             self.highlightred = 1
-
+        
         self.highlightblue = self.blue * 1.25
         if(self.highlightblue > 1):
             self.highlightblue = 1
-
+        
         self.highlightgreen = self.green * 1.25
         if(self.highlightgreen > 1):
             self.highlightgreen = 1
-
+        
         getClock().schedule_once(self.ListFade, 1.0)
         self.fadein = Animation(d=0.3, alpha=0.7)
         self.fadeout = Animation(d=0.7, alpha=0)
@@ -244,8 +244,8 @@ class Showinstruments(MTWidget):
         self.showing = True
         self.highlight = True
         self.current = None    
-
-        
+    
+    
     def on_item_press(self, item, *largs):
         if self.current is not None:
             self.current.selected = False
@@ -283,22 +283,17 @@ class Showinstruments(MTWidget):
         wenn was ins hauptfenster soll, dann wie oben per getWindow() einhaengen.
         '''
         #W = MTWindow() 
-       
-        
-        
-   
-        
-     
-
+    
+    
     def on_draw(self):
         super(Showinstruments, self).on_draw()
-       
+    
     def draw(self):
         with DO(gx_matrix, gx_blending):
             if self.highlight:
                 self.highlightalpha = self.alpha * 1.25
                 if(self.highlightalpha > 1):
-                   self.highlightalpha = 1
+                    self.highlightalpha = 1
                 glColor4f(self.highlightred, self.highlightgreen, self.highlightblue, self.highlightalpha)
             glColor4f(self.red,self.green,self.blue,self.alpha)
             drawRoundedRectangle(pos=(self.list.x, self.list.y),size = (self.list.width, self.list.height))
@@ -306,7 +301,7 @@ class Showinstruments(MTWidget):
     def ListFade(self,dt):
         self.do(self.fadeout)
     
-   
+    
 class Showslider(MTSlider):
     def __init__(self, **kwargs):
         super(Showslider, self).__init__(**kwargs)
@@ -316,7 +311,7 @@ class Showslider(MTSlider):
         
         self.min = 20
         self.max = 220
-       
+        
         self.alpha = 0.00
         self.red = 0.7
         self.green = 0.4
@@ -325,15 +320,15 @@ class Showslider(MTSlider):
         self.highlightred = self.red * 1.25
         if(self.highlightred > 1):
             self.highlightred = 1
-
+        
         self.highlightblue = self.blue * 1.25
         if(self.highlightblue > 1):
             self.highlightblue = 1
-
+        
         self.highlightgreen = self.green * 1.25
         if(self.highlightgreen > 1):
             self.highlightgreen = 1
-
+        
         getClock().schedule_once(self.ListFade, 1.0)
         self.fadein = Animation(d=0.3, alpha=0.7)
         self.fadeout = Animation(d=0.7, alpha=0)
@@ -342,7 +337,7 @@ class Showslider(MTSlider):
         self.showing = True
         self.highlight = True      
         self.current = None       
-           
+    
     def draw(self):
         with DO(gx_matrix, gx_blending):
             if self.highlight:
@@ -355,7 +350,7 @@ class Showslider(MTSlider):
         super(Showslider, self).draw()
     def ListFade(self,dt):
         self.do(self.fadeout)
-              
+    
 
 class Menubut(MTWidget):
     def __init__(self, **kwargs):
@@ -385,10 +380,8 @@ class Menubut(MTWidget):
         self.buttons.add_widget(self.btn3)
         self.buttons.add_widget(self.btn4)
         self.add_widget(self.buttons)
-        
-
-        
-
+    
+    
     def clear(self, *largs):
         self.children.clear()
         W=MTWindow()
@@ -415,9 +408,8 @@ class Menubut(MTWidget):
         self.buttons.add_widget(self.btn3)
         self.buttons.add_widget(self.btn4)
         self.add_widget(self.buttons)
-#        
-   
-        
+    
+    
     def arpegiator(self, *largs):
         self.clear()
         m = MTButton(label='buhuh', pos = (400,140))
@@ -429,9 +421,8 @@ class Menubut(MTWidget):
         btn = MTButton(label='ARPEGIATOR', size = (100,60),pos = (x,y), cls=('simple','pcolored'))
         btn.push_handlers(on_press=self.clear)
         self.add_widget(btn)
-                        
-        
-                       
+    
+    
     def bpm(self, *largs):
         self.clear()
         c = self.btn1
@@ -453,7 +444,7 @@ class Menubut(MTWidget):
             EventManager.getInstance().setBPM(value)
         except: 
             pass
-
+    
     def volume(self, *largs):
         self.clear()
         c = self.btn3
@@ -470,8 +461,8 @@ class Menubut(MTWidget):
         m.connect('on_value_change',self.volumeSlider_value_change)
         l2.add_widget(m)
         self.add_widget(l2)
-
-    ''' event handler for volume slider's on_value_change '''                                 
+    
+    ''' event handler for volume slider's on_value_change '''
     def volumeSlider_value_change(self,value):
         try:
             EventManager.getInstance().setVolume(value)
@@ -505,11 +496,10 @@ class Menubut(MTWidget):
         list = Showinstruments()
         l4.add_widget(list)
         self.add_widget(l4)
-                       
-                
+        
     
 
-def createMainscreen():    
+def createMainscreen():
     fl = Menubut()
     w = getWindow()
     w.add_widget(fl)
