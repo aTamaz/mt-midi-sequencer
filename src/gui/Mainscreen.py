@@ -390,6 +390,7 @@ class Menubut(MTWidget):
    
         
     def arpegiator(self, *largs):
+        self.clear()
         m = MTButton(label='buhuh', pos = (400,140))
         self.add_widget(m)
         c = self.btn0
@@ -403,6 +404,7 @@ class Menubut(MTWidget):
         
                        
     def bpm(self, *largs):
+        self.clear()
         c = self.btn1
         x = c.x
         y = c.y
@@ -424,6 +426,7 @@ class Menubut(MTWidget):
             pass
 
     def volume(self, *largs):
+        self.clear()
         c = self.btn3
         x = c.x
         y = c.y
@@ -447,6 +450,7 @@ class Menubut(MTWidget):
             pass
         
     def delay(self, *largs):
+        self.clear()
         c = self.btn2 
         x = c.x
         y = c.y
@@ -460,6 +464,7 @@ class Menubut(MTWidget):
         self.add_widget(l3)
                         
     def instruments(self, *largs):
+        self.clear()
         c = self.btn4
         x = c.x
         y = c.y
