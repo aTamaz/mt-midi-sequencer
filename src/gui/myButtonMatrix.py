@@ -36,7 +36,6 @@ class MTNote:
 
 #################################################################################################
 
-<<<<<<< HEAD
 def createButtonMatrix():
     w = getWindow()
     
@@ -64,7 +63,7 @@ def createButtonMatrix():
     
     w.add_widget(innerwin)
     w.add_widget(btnSet)
-=======
+
 class NotesMatrix():
     def __init__(self, **kwargs):
         self.keyboard = MTKeyboard()
@@ -108,6 +107,4 @@ class NotesMatrix():
                 
                 if (status==1):
                     guiMatrix[tick][(note-offset)%12]=True
-                    
->>>>>>> 7224a1a8449a5d2e405ebef130231362c71e7fa0
 
