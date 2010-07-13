@@ -15,4 +15,3 @@ DEFAULT_bpm=128
 
 
 EventManager_playDataQueue_maxsize = 2
-MidiServer_playDataQueue_maxsize = 2
