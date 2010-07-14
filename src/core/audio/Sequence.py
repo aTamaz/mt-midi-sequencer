@@ -18,6 +18,8 @@ class Sequence():
 	def __init__(self, **kwargs):
 		kwargs.setdefault('id', -1)
 		kwargs.setdefault('logging', True)
+		kwargs.setdefault('arpeggiated', False)
+		self.arpeggiated = kwargs.get('arpeggiated')
 		self.id = int(kwargs.get('id'))
 		self.__logging = kwargs.get('logging')
 		self.__Arpeggiator = Arpeggiator.Arpeggiator()

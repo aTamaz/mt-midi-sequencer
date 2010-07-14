@@ -176,8 +176,22 @@ class MusicBubble(MTScatterImage):
             
         # check, if we've dropped into the trash
         ''' TODO verbessern mit self.collide(muelleimer) '''
-        if touch.x>600 and touch.y<100:
+        if touch.x>700 and touch.y<100:
             self.__destructor()
+            
+        # check, if we've dropped into the "arpeggio-zone":
+        if touch.x < 150 and touch.y < 100:
+            if not self.seq.arpeggiated:
+                self.image_backup = self.image
+                imgPath = os.path.join(current_dir, 'instruments', 'arp.png')
+                #imgPath = self.filename[:len(self.filename) - 4] + "_arp.png"
+                self.image = Loader.image(imgPath)
+                self.seq.arpeggiated = True
+        else:
+            if self.seq.arpeggiated:
+                self.seq.arpeggiated = False
+                if self.image_backup != None:
+                    self.image = self.image_backup
 
         #return same as super event handler to get normal manipulations
         return super(MusicBubble, self).on_touch_up(touch)
@@ -363,7 +377,7 @@ class Menubut(MTWidget):
         imgName = os.path.join(current_dir,'instruments','trashcan.png')
         self.object = MTContainer(Image(imgName),pos = (720,0))
         self.add_widget(self.object)
-        self.btn0 = MTButton(label='ARPEGIATOR', size = (100,60), cls=('simple', 'colored'))
+        self.btn0 = MTButton(label='ARPEGGIATOR', size = (100,60), cls=('simple', 'colored'))
         self.btn0.push_handlers(on_press=self.arpegiator)
         self.btn1 = MTButton(label='BPM', size = (100,60), cls=('simple', 'colored'))
         self.btn1.push_handlers(on_press=self.bpm)
