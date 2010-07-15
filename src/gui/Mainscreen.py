@@ -390,23 +390,23 @@ class Menubut(MTWidget):
         super(Menubut, self).__init__(**kwargs)
         W = MTWindow()
         print W.height
-        imgName = os.path.join(current_dir, 'instruments', 'menu.png')
+        imgName = os.path.join(current_dir, 'instruments', 'menu1.png')
         self.object = MTContainer(Image(imgName), pos =(0,100))
         self.add_widget(self.object)
         imgName = os.path.join(current_dir,'instruments','trashcan.png')
         self.object = MTContainer(Image(imgName),pos = (720,0))
         self.add_widget(self.object)
-        self.btn0 = MTButton(label='ARPEGGIATOR', size = (150,60), cls=('simple', 'colored'))
+        self.btn0 = MTButton(label='Arpegiator', size = (100,60), cls=('simple', 'colored'))
         self.btn0.push_handlers(on_press=self.arpegiator)
-        self.btn1 = MTButton(label='BPM', size = (150,60), cls=('simple', 'colored'))
+        self.btn1 = MTButton(label='Bpm', size = (100,60), cls=('simple', 'colored'))
         self.btn1.push_handlers(on_press=self.bpm)
-        self.btn2 = MTButton(label='DELAY', size = (150,60), cls=('simple', 'colored'))
+        self.btn2 = MTButton(label='Delay', size = (100,60), cls=('simple', 'colored'))
         self.btn2.push_handlers(on_press=self.delay)
-        self.btn3 = MTButton(label='VOLUME', size = (150,60), cls=('simple', 'colored'))
+        self.btn3 = MTButton(label='Volume', size = (100,60), cls=('simple', 'colored'))
         self.btn3.push_handlers(on_press=self.volume)
-        self.btn4 = MTButton(label='INSTRUMENTS', size = (150,60), cls=('simple', 'colored'))
+        self.btn4 = MTButton(label='Instruments', size = (100,60), cls=('simple', 'colored'))
         self.btn4.push_handlers(on_press=self.instruments)
-        self.buttons = MTBoxLayout(orientation='vertical',padding = 10, spacing = 3, pos = (43, W.height-450))
+        self.buttons = MTBoxLayout(orientation='vertical',padding = 10, spacing = 3, pos = (30, W.height-450))
         self.buttons.add_widget(self.btn0)
         self.buttons.add_widget(self.btn1)
         self.buttons.add_widget(self.btn2)
@@ -418,23 +418,23 @@ class Menubut(MTWidget):
     def clear(self, *largs):
         self.children.clear()
         W=MTWindow()
-        imgName = os.path.join(current_dir, 'instruments', 'menu.png')
+        imgName = os.path.join(current_dir, 'instruments', 'menu1.png')
         self.object = MTContainer(Image(imgName), pos =(0,100))
         self.add_widget(self.object)
         imgName = os.path.join(current_dir,'instruments','trashcan.png')
         self.object = MTContainer(Image(imgName),pos = (720,0))
         self.add_widget(self.object)
-        self.btn0 = MTButton(label='ARPEGIATOR', size = (150,60), cls=('simple', 'colored'))
+        self.btn0 = MTButton(label='Arpegiator', size = (100,60), cls=('simple', 'colored'))
         self.btn0.push_handlers(on_press=self.arpegiator)
-        self.btn1 = MTButton(label='BPM', size = (150,60), cls=('simple', 'colored'))
+        self.btn1 = MTButton(label='Bpm', size = (100,60), cls=('simple', 'colored'))
         self.btn1.push_handlers(on_press=self.bpm)
-        self.btn2 = MTButton(label='DELAY', size = (150,60), cls=('simple', 'colored'))
+        self.btn2 = MTButton(label='Delay', size = (100,60), cls=('simple', 'colored'))
         self.btn2.push_handlers(on_press=self.delay)
-        self.btn3 = MTButton(label='VOLUME', size = (150,60), cls=('simple', 'colored'))
+        self.btn3 = MTButton(label='Volume', size = (100,60), cls=('simple', 'colored'))
         self.btn3.push_handlers(on_press=self.volume)
-        self.btn4 = MTButton(label='INSTRUMENTS', size = (150,60), cls=('simple', 'colored'))
+        self.btn4 = MTButton(label='Instruments', size = (100,60), cls=('simple', 'colored'))
         self.btn4.push_handlers(on_press=self.instruments)
-        self.buttons = MTBoxLayout(orientation='vertical',padding = 10, spacing = 3, pos = (43, W.height-450))
+        self.buttons = MTBoxLayout(orientation='vertical',padding = 10, spacing = 3, pos = (30, W.height-450))
         self.buttons.add_widget(self.btn0)
         self.buttons.add_widget(self.btn1)
         self.buttons.add_widget(self.btn2)
@@ -445,13 +445,11 @@ class Menubut(MTWidget):
     
     def arpegiator(self, *largs):
         self.clear()
-        m = MTButton(label='buhuh', pos = (400,140))
-        self.add_widget(m)
         c = self.btn0
         x = c.x
         y = c.y
         self.remove_widget(c)
-        btn = MTButton(label='ARPEGIATOR', size = (150,60),pos = (x,y), cls=('simple','pcolored'))
+        btn = MTButton(label='Arpegiator', size = (100,60),pos = (x,y), cls=('simple','pcolored'))
         btn.push_handlers(on_press=self.clear)
         self.add_widget(btn)
     
@@ -462,7 +460,7 @@ class Menubut(MTWidget):
         x = c.x
         y = c.y
         self.remove_widget(c)
-        btn = MTButton(label='BPM', size = (150,60),pos = (x,y), cls=('simple','pcolored'))
+        btn = MTButton(label='Bpm', size = (100,60),pos = (x,y), cls=('simple','pcolored'))
         btn.push_handlers(on_press=self.clear)
         self.add_widget(btn)
         l1 = MTBoxLayout(orientation='vertical',padding = 10, spacing = 3, pos= (180,263))
@@ -484,7 +482,7 @@ class Menubut(MTWidget):
         x = c.x
         y = c.y
         self.remove_widget(c)
-        btn = MTButton(label='VOLUME', size = (150,60),pos = (x,y), cls=('simple','pcolored'))
+        btn = MTButton(label='Volume', size = (100,60),pos = (x,y), cls=('simple','pcolored'))
         btn.push_handlers(on_press=self.clear)
         self.add_widget(btn)
         l2 = MTBoxLayout(orientation='vertical',padding = 10, spacing = 3, pos= (180,263))
@@ -508,7 +506,7 @@ class Menubut(MTWidget):
         x = c.x
         y = c.y
         self.remove_widget(c)
-        btn = MTButton(label='DELAY', size = (150,60),pos = (x,y), cls=('simple','pcolored'))
+        btn = MTButton(label='Delay', size = (150,60),pos = (x,y), cls=('simple','pcolored'))
         btn.push_handlers(on_press=self.clear)
         self.add_widget(btn)
         l3 = MTBoxLayout(orientation='vertical',padding = 10, spacing = 3, pos= (180,263))
@@ -522,7 +520,7 @@ class Menubut(MTWidget):
         x = c.x
         y = c.y
         self.remove_widget(c)
-        btn = MTButton(label='INSTRUMENTS', size = (150,60),pos = (x,y), cls=('simple','pcolored'))
+        btn = MTButton(label='Instruments', size = (150,60),pos = (x,y), cls=('simple','pcolored'))
         btn.push_handlers(on_press=self.clear)
         self.add_widget(btn)
         l4 = MTBoxLayout(orientation='vertical',padding = 10, spacing = 3)
