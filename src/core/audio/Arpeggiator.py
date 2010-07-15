@@ -2,6 +2,11 @@ import time
 import random
 
 class Arpeggiator():
+	def __init__(self, instrument, channel, velocity):
+		self.channel = channel
+		self.velocity = velocity
+	def setInstr(self, instr):
+		self.instrument = instr
 	"""
 	Generates a whole-number of loops in an array.
 	a, b, c e[60, 71] eZ
@@ -25,18 +30,18 @@ class Arpeggiator():
 			# debug for all notes off
 			cha=1
 		else:
-			ins=1
-			cha=1
+			ins=self.instrument
+			cha=self.channel
 
 		loop = [
-			[[ins,cha, a - 24, 100, ON]],
-			[[ins,cha, a - 24, 100, OFF], [ins,cha, c - 24, 100, ON]],
-			[[ins,cha, c - 24, 100, OFF], [ins,cha, a - 12, 100, ON]],
-			[[ins,cha, a - 12, 100, OFF], [ins,cha, b - 12, 100, ON]],
-			[[ins,cha, b - 12, 100, OFF], [ins,cha, c - 12, 100, ON]],
-			[[ins,cha, c - 12, 100, OFF], [ins,cha, a, 100, ON]],
-			[[ins,cha, a, 100, OFF], [ins,cha, b, 100, ON]],
-			[[ins,cha, b, 100, OFF], [ins,cha, c, 100, ON]]
+			[[ins,cha, a - 24, self.velocity, ON]],
+			[[ins,cha, a - 24, self.velocity, OFF], [ins,cha, c - 24, self.velocity, ON]],
+			[[ins,cha, c - 24, self.velocity, OFF], [ins,cha, a - 12, self.velocity, ON]],
+			[[ins,cha, a - 12, self.velocity, OFF], [ins,cha, b - 12, self.velocity, ON]],
+			[[ins,cha, b - 12, self.velocity, OFF], [ins,cha, c - 12, self.velocity, ON]],
+			[[ins,cha, c - 12, self.velocity, OFF], [ins,cha, a, self.velocity, ON]],
+			[[ins,cha, a, self.velocity, OFF], [ins,cha, b, self.velocity, ON]],
+			[[ins,cha, b, self.velocity, OFF], [ins,cha, c, self.velocity, ON]]
 		]
 
 		if (currentLoop != None):
@@ -80,3 +85,29 @@ class Arpeggiator():
 			loop = self.getLoop(a,b,c)
 
 		return loop
+	
+	def arpeggiate(self, playdata):
+		notes = []
+		currentTimeStep = playdata[0]
+		for note in currentTimeStep:
+			notes.append(note[2])
+		
+		if len(notes) < 3:
+			return playdata
+		
+		notes = self.__sortArray(notes)
+		playdata = self.getLoop(notes[0], notes[1], notes[2])
+		return playdata
+	
+	
+	def __sortArray(self, notes):
+		for j in notes:
+			for i in range(len(notes) - 1):
+				if notes[i] > notes[i + 1]:
+					self.__exchangeNotes(notes[i], notes[i + 1])
+		return notes;
+	
+	def __exchangeNotes(self, note1, note2):
+		tmp = note2
+		note2 = note1
+		note1 = tmp

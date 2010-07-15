@@ -22,7 +22,7 @@ class Sequence():
 		self.arpeggiated = kwargs.get('arpeggiated')
 		self.id = int(kwargs.get('id'))
 		self.__logging = kwargs.get('logging')
-		self.__Arpeggiator = Arpeggiator.Arpeggiator()
+		self.__arpeggiator = Arpeggiator.Arpeggiator(0, 0, 100)
 		
 		# get reference to manager. if no -> exception
 		self.manager=kwargs.get('manager')
@@ -108,6 +108,7 @@ class Sequence():
 					
 		if (self.arpeggiated):
 			# do your arppeggiator
+			self.__playdata = self.__arpeggiator.arpeggiate(self.__playdata)
 			print 'do your arppeggiator'
 
 	''' callback method for exposing music information '''
@@ -162,6 +163,7 @@ class Sequence():
 			print 'Sequence <'+str(self.id)+'>:\t' + msg
 			
 	def setInstrument(self, instr):
+		self.__arpeggiator.setInstr(instr)
 		if (int(instr) < 0 or int(instr) > 127):
 			return
 		
@@ -169,38 +171,6 @@ class Sequence():
 		
 		''' TODO add effect to playdata storage '''
 		self.__log('Sequence was set to instrument ' + str(instr))
-		
-			
-	def setNote(self, note):
-		if self.note1 == 0:
-			self.note1 = note
-			print "first set"
-		elif self.note2 == 0:
-			self.note2 = note
-			print "second set"
-		elif self.note3 == 0:
-			self.note3 = note
-			print "third set"
-		
-		if (self.note3 != 0):
-			if self.note1 > self.note2:
-				self.exchange(self.note1, self.note2)
-			if self.note2 > self.note3:
-				self.exchange(self.note2, self.note3)
-			if self.note1 > self.note2:
-				self.exchange(self.note1, self.note2)
-			self.__playdata = self.__Arpeggiator.getLoop(self.note1, self.note2, self.note3)
-			print "playdata set!"
-			print self.note1
-			print self.note2
-			print self.note3
-			print self.__playdata
-	
-	''' TODO check if this still needed and delete if not '''
-	def exchange(self, note1, note2):
-		tmp = note2
-		note2 = note1
-		note1 = tmp
 		
 	''' deletes this sequence in the right way '''
 	def delete(self):

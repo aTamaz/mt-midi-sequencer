@@ -204,9 +204,11 @@ class MusicBubble(MTScatterImage):
                 #imgPath = self.filename[:len(self.filename) - 4] + "_arp.png"
                 self.image = Loader.image(imgPath)
                 self.seq.arpeggiated = True
+                self.seq.transformRawDataToPlayData()
         else:
             if self.seq.arpeggiated:
                 self.seq.arpeggiated = False
+                self.seq.transformRawDataToPlayData()
                 if self.image_backup != None:
                     self.image = self.image_backup
 
