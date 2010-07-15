@@ -506,7 +506,7 @@ class Menubut(MTWidget):
         x = c.x
         y = c.y
         self.remove_widget(c)
-        btn = MTButton(label='Delay', size = (150,60),pos = (x,y), cls=('simple','pcolored'))
+        btn = MTButton(label='Delay', size = (100,60),pos = (x,y), cls=('simple','pcolored'))
         btn.push_handlers(on_press=self.clear)
         self.add_widget(btn)
         l3 = MTBoxLayout(orientation='vertical',padding = 10, spacing = 3, pos= (180,263))
@@ -520,7 +520,7 @@ class Menubut(MTWidget):
         x = c.x
         y = c.y
         self.remove_widget(c)
-        btn = MTButton(label='Instruments', size = (150,60),pos = (x,y), cls=('simple','pcolored'))
+        btn = MTButton(label='Instruments', size = (100,60),pos = (x,y), cls=('simple','pcolored'))
         btn.push_handlers(on_press=self.clear)
         self.add_widget(btn)
         l4 = MTBoxLayout(orientation='vertical',padding = 10, spacing = 3)
