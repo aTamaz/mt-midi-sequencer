@@ -12,8 +12,39 @@ class Arpeggiator():
 	a, b, c e[60, 71] eZ
 	a < b < c
 
-	One loop is a half of a bar -> two beats (2/4)
+	One loop is a half of a bar -> two beats (2/4) -> 1/8 of the sequence
 	"""
+	
+	def generateLoop2(self, notes):
+		a = notes[0]
+		b = notes[1]
+		c = notes[2]
+		self.transpose = 12
+		ON = 1
+		OFF = 0
+		
+		instr = self.instrument
+		chnl = self.channel
+		transp = self.transpose
+		
+		loop = [
+			[[instr, chnl, -1, self.velocity, OFF], [instr, chnl, a - 24 + transp, self.velocity, ON]],
+			[[instr, chnl, a - 24 + transp, self.velocity, OFF], [instr, chnl, c - 24 + transp, self.velocity, ON]],
+			[[instr, chnl, c - 24 + transp, self.velocity, OFF], [instr, chnl, a - 12 + transp, self.velocity, ON]],
+			[[instr, chnl, a - 12 + transp, self.velocity, OFF], [instr, chnl, b - 12 + transp, self.velocity, ON]],
+			[[instr, chnl, b - 12 + transp, self.velocity, OFF], [instr, chnl, c - 12 + transp, self.velocity, ON]],
+			[[instr, chnl, c - 12 + transp, self.velocity, OFF], [instr, chnl, a + transp, self.velocity, ON]],
+			[[instr, chnl, a + transp, self.velocity, OFF], [instr, chnl, b + transp, self.velocity, ON]],
+			[[instr, chnl, b + transp, self.velocity, OFF], [instr, chnl, c + transp, self.velocity, ON]]
+		]
+		
+		completeLoop = []
+		for i in range(8):
+			completeLoop += loop
+			
+		return completeLoop
+	
+	
 	def __generateLoop(self, a, b, c, loopTimes, currentLoop=None, getRandom=True):
 		# constants for MIDI Status
 		ON = 1		# note on
@@ -26,22 +57,23 @@ class Arpeggiator():
 		if(getRandom):
 			# random instrument and channel
 			ins = random.randint(0, 127)
-			cha=random.randint(0, 15)
+			cha = random.randint(0, 15)
 			# debug for all notes off
-			cha=1
+			cha = 1
 		else:
-			ins=self.instrument
-			cha=self.channel
-
+			ins = self.instrument
+			cha = self.channel
+		self.transpose = 12
+		
 		loop = [
-			[[ins,cha, a - 24, self.velocity, ON]],
-			[[ins,cha, a - 24, self.velocity, OFF], [ins,cha, c - 24, self.velocity, ON]],
-			[[ins,cha, c - 24, self.velocity, OFF], [ins,cha, a - 12, self.velocity, ON]],
-			[[ins,cha, a - 12, self.velocity, OFF], [ins,cha, b - 12, self.velocity, ON]],
-			[[ins,cha, b - 12, self.velocity, OFF], [ins,cha, c - 12, self.velocity, ON]],
-			[[ins,cha, c - 12, self.velocity, OFF], [ins,cha, a, self.velocity, ON]],
-			[[ins,cha, a, self.velocity, OFF], [ins,cha, b, self.velocity, ON]],
-			[[ins,cha, b, self.velocity, OFF], [ins,cha, c, self.velocity, ON]]
+			[[ins,cha, a - 24 + self.transpose, self.velocity, ON]],
+			[[ins,cha, a - 24 + self.transpose, self.velocity, OFF], [ins,cha, c - 24 + self.transpose, self.velocity, ON]],
+			[[ins,cha, c - 24 + self.transpose, self.velocity, OFF], [ins,cha, a - 12 + self.transpose, self.velocity, ON]],
+			[[ins,cha, a - 12 + self.transpose, self.velocity, OFF], [ins,cha, b - 12 + self.transpose, self.velocity, ON]],
+			[[ins,cha, b - 12 + self.transpose, self.velocity, OFF], [ins,cha, c - 12 + self.transpose, self.velocity, ON]],
+			[[ins,cha, c - 12 + self.transpose, self.velocity, OFF], [ins,cha, a + self.transpose, self.velocity, ON]],
+			[[ins,cha, a + self.transpose, self.velocity, OFF], [ins,cha, b + self.transpose, self.velocity, ON]],
+			[[ins,cha, b + self.transpose, self.velocity, OFF], [ins,cha, c + self.transpose, self.velocity, ON]]
 		]
 
 		if (currentLoop != None):
@@ -61,9 +93,10 @@ class Arpeggiator():
 			return loop
 
 	def getLoop(self, a, b, c):
-		myLoop = self.__generateLoop(a, b, c, 4, None, True)
-		myLoop = self.__generateLoop(a, b, c, 2, myLoop, getRandom=True)
-		myLoop = self.__generateLoop(a, b, c, 2, myLoop, getRandom=True)
+		myLoop = self.__generateLoop(a, b, c, 8, None, False)
+		#myLoop = self.__generateLoop(a, b, c, 4, None, True)
+		#myLoop = self.__generateLoop(a, b, c, 2, myLoop, getRandom=True)
+		#myLoop = self.__generateLoop(a, b, c, 2, myLoop, getRandom=True)
 		return myLoop
 
 	def getUgh(self):
@@ -96,7 +129,8 @@ class Arpeggiator():
 			return playdata
 		
 		notes = self.__sortArray(notes)
-		playdata = self.getLoop(notes[0], notes[1], notes[2])
+		#playdata = self.getLoop(notes[0], notes[1], notes[2])
+		playdata = self.generateLoop2(notes)
 		return playdata
 	
 	

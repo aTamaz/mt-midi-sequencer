@@ -128,7 +128,10 @@ class Output(threading.Thread): # Output runs in its own Thread
 				self.__log('\tnote on>\t' + str(note)) #LOG
 			elif status == OFF:
 				status_off = 128+channel
-				self.midi_out.write([[[status_off,note,velocity],self.__timestamp]])
+				if note == -1:
+					self.midi_out.write([[[176 + channel, 123, 0], self.__timestamp]])
+				else:  
+					self.midi_out.write([[[status_off,note,velocity],self.__timestamp]])
 				self.__log('\t< note off\t' + str(note)) # LOG
 
 			self.__log("\t velocity \t"+str(velocity))

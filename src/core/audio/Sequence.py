@@ -107,9 +107,7 @@ class Sequence():
 					self.__playdata[(tick*2 +1)%64].append(midi)
 					
 		if (self.arpeggiated):
-			# do your arppeggiator
 			self.__playdata = self.__arpeggiator.arpeggiate(self.__playdata)
-			print 'do your arppeggiator'
 
 	''' callback method for exposing music information '''
 	def getMidiData(self,tick):

@@ -209,6 +209,7 @@ class MusicBubble(MTScatterImage):
             if self.seq.arpeggiated:
                 self.seq.arpeggiated = False
                 self.seq.transformRawDataToPlayData()
+                ''' TODO Mute all notes '''
                 if self.image_backup != None:
                     self.image = self.image_backup
 
@@ -396,7 +397,7 @@ class Menubut(MTWidget):
         imgName = os.path.join(current_dir,'instruments','trashcan.png')
         self.object = MTContainer(Image(imgName),pos = (720,0))
         self.add_widget(self.object)
-        self.btn0 = MTButton(label='Arpegiator', size = (100,60), cls=('simple', 'colored'))
+        self.btn0 = MTButton(label='Arpeggiator', size = (100,60), cls=('simple', 'colored'))
         self.btn0.push_handlers(on_press=self.arpegiator)
         self.btn1 = MTButton(label='Bpm', size = (100,60), cls=('simple', 'colored'))
         self.btn1.push_handlers(on_press=self.bpm)
@@ -424,7 +425,7 @@ class Menubut(MTWidget):
         imgName = os.path.join(current_dir,'instruments','trashcan.png')
         self.object = MTContainer(Image(imgName),pos = (720,0))
         self.add_widget(self.object)
-        self.btn0 = MTButton(label='Arpegiator', size = (100,60), cls=('simple', 'colored'))
+        self.btn0 = MTButton(label='Arpeggiator', size = (100,60), cls=('simple', 'colored'))
         self.btn0.push_handlers(on_press=self.arpegiator)
         self.btn1 = MTButton(label='Bpm', size = (100,60), cls=('simple', 'colored'))
         self.btn1.push_handlers(on_press=self.bpm)
@@ -449,7 +450,7 @@ class Menubut(MTWidget):
         x = c.x
         y = c.y
         self.remove_widget(c)
-        btn = MTButton(label='Arpegiator', size = (100,60),pos = (x,y), cls=('simple','pcolored'))
+        btn = MTButton(label='Arpeggiator', size = (100,60),pos = (x,y), cls=('simple','pcolored'))
         btn.push_handlers(on_press=self.clear)
         self.add_widget(btn)
     
