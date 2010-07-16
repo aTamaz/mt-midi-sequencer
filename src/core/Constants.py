@@ -11,7 +11,7 @@ LOGGING_eventSystem=0
 
 ''' Audio System '''
 DEFAULT_bpm=128
-
+NOTE_BEGIN=60
 
 
 EventManager_playDataQueue_maxsize = 2

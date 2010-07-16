@@ -45,7 +45,7 @@ class Sequence():
 		self.note3 = 0
 		
 		self.__on_notes = []
-		for i in range(0,127):
+		for i in xrange(128):
 			self.__on_notes.append(False)
 
 		'''
@@ -57,27 +57,54 @@ class Sequence():
 		# specification for __playdata structure: http://wiki.github.com/timlandgraf/multitouch/234-midi-events-datenhaltung
 
 		''' playdata '''
+		'''
 		if(self.id==0):
 			# first static for reference
 			self.__playdata = self.__Arpeggiator.getUgh()
 		else:
 			# all others are random arpgeggiator
 			self.__playdata = self.__Arpeggiator.getRandomLoop()
-			
-		''' rawNoteData '''
+		'''
+		self.__playdata = []
+
+		''' rawNoteData '''	
 		self.__rawNoteData = []
-		for x in range (0,31):
-			subArr = []
-			for y in range (0,11):
-				#subArr.append(MTNote())
-				subArr.append([])
-			self.__rawNoteData.append(subArr)
+		for i in xrange(32):
+			self.__rawNoteData.append([])
+			for j in xrange(12):
+				self.__rawNoteData[i].append(None)
 	
 	def getPlaydata(self):
 		return self.__playdata
 	
 	def getRawNoteData(self):
 		return self.__rawNoteData
+	
+	def setRawNoteData(self,data):
+		self.__rawNoteData = data
+		self.transformRawDataToPlayData()
+
+	def transformRawDataToPlayData(self):
+		offset = Constants.NOTE_BEGIN
+		
+		self.__playdata = []
+		for i in xrange(64):
+			self.__playdata.append([])
+		
+		for tick in xrange(32):
+			for pitch in xrange(12):
+				if (self.__rawNoteData[tick][pitch] != None):
+					# on event
+					midi = [1,1,offset+pitch,127,1]
+					self.__playdata[tick*2].append(midi)
+					
+					# off event
+					midi = [1,1,offset+pitch,127,0]
+					self.__playdata[(tick*2 +1)%64].append(midi)
+					
+		if (self.arpeggiated):
+			# do your arppeggiator
+			print 'do your arppeggiator'
 
 	''' callback method for exposing music information '''
 	def getMidiData(self,tick):
@@ -172,7 +199,7 @@ class Sequence():
 	def delete(self):
 		self.__log('deleting sequence')
 		
-		for i in range(0,127):
+		for i in xrange(128):
 			if (self.__on_notes[i]):
 				self.__die_notes.append([self.instrument,self.channel,i,0,0])
 				
