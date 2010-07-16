@@ -36,34 +36,6 @@ class MTNote:
 
 #################################################################################################
 
-def createButtonMatrix():
-    w = getWindow()
-    
-    keyboard = MTKeyboard()
-    note = MTNote()
-    # Set Button
-    btnSet = MTButton(label='Set', pos=(650,50))
-    
-    ''' Event Handlers '''
-    @btnSet.event
-    def on_press(*largs):
-        if largs[0][2] == 1:
-            lengthArray[0] = note.length()
-#            rawNoteDataArray[largs[0][0]][largs[0][1]] = note.length()
-        else:
-            lengthArray[0] = []
-#            rawNoteDataArray[largs[0][0]][largs[0][1]] = []
-        print lengthArray
-#        print keyboard.getRawNoteData(rawNoteDataArray)
-    
-    
-    ''' adding zone '''
-    innerwin = MTInnerWindow(size=(605,468), pos=(50,50))
-    innerwin.add_widget(keyboard)
-    
-    w.add_widget(innerwin)
-    w.add_widget(btnSet)
-
 class NotesMatrix():
     def __init__(self, **kwargs):
         self.keyboard = MTKeyboard()
@@ -73,7 +45,6 @@ class NotesMatrix():
         self.sequence = kwargs.get('sequence')
         if not self.sequence == None:
             self.setPlaydata(self.sequence.getPlaydata())
-        
         
         
         # initialize
@@ -89,6 +60,17 @@ class NotesMatrix():
         
         w = getWindow()
         w.add_widget(self.innerwin)
+        
+        ''' DEBUG '''
+        btnSet = MTButton(label='Set', pos=(650,50))
+        w.add_widget(btnSet)
+        
+        @btnSet.event
+        def on_press(*largs):
+            print self.keyboard.getRawNoteData(rawNoteDataArray)
+        
+        
+        
         
     def setPlaydata(self, playdata):
         offset = 60

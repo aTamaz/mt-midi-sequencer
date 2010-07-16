@@ -42,22 +42,40 @@ class Sequence():
 		self.note2 = 0
 		self.note3 = 0
 		
-		# create an empty playdata:
 		self.__on_notes = []
 		for i in range(0,127):
 			self.__on_notes.append(False)
 
+		'''
+		playdata contains information for midi events, which will be played
+		rawNoteData contains information for midi events before a effect is 
+		applied to it. rawNoteData's information will be displayed in the
+		ButtonMatrix
+		'''
 		# specification for __playdata structure: http://wiki.github.com/timlandgraf/multitouch/234-midi-events-datenhaltung
 
+		''' playdata '''
 		if(self.id==0):
 			# first static for reference
 			self.__playdata = self.__Arpeggiator.getUgh()
 		else:
 			# all others are random arpgeggiator
 			self.__playdata = self.__Arpeggiator.getRandomLoop()
+			
+		''' rawNoteData '''
+		self.__rawNoteData = []
+		for x in range (0,31):
+			subArr = []
+			for y in range (0,11):
+				#subArr.append(MTNote())
+				subArr.append([])
+			self.__rawNoteData.append(subArr)
 	
 	def getPlaydata(self):
 		return self.__playdata
+	
+	def getRawNoteData(self):
+		return self.__rawNoteData
 
 	''' callback method for exposing music information '''
 	def getMidiData(self,tick):
@@ -73,7 +91,7 @@ class Sequence():
 		
 		# if sequence is shorter than the general sequence length do nothing
 		if(tick>=len(self.__playdata)):
-			print 'ausgelassen'
+			self.__log("skipped this tick because this tick ("+str(tick)+") is too big for this sequence with maximum ticks: "+str(len(self.__playdata)))
 			return None
 
 		# internal tick deprecated: bad synch properties!
