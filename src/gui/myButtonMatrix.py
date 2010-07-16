@@ -1,18 +1,27 @@
 from pymt import *
 import core.audio.Note as Note
 import core.Constants as Constants
+import core.audio.EventManager as EventManager
 
 class MTKeyboard(MTButtonMatrix):
     def __init__(self, **kwargs):
         super(MTKeyboard, self).__init__(**kwargs)
         self.pos = (15,15)
         self.buttoncolor = (.2,.9,0,.5)
-        self.matrix_size = (32,12)
+        self.matrix_size = (32,13)
         self.size = (600,455)
         self.downcolor = (0, .5, 1, 1)
         self.__rawNoteData = kwargs.get('rawNoteData')
         self.__notesMatrix = kwargs.get('notesMatrix')
         self.displayRawNoteData()
+        
+        EventManager.getInstance().register(self,self.__showPlayBar)
+        
+    def __showPlayBar(self, tick):    
+        for x in xrange(32):
+            self.matrix[x][12]=False
+        
+        self.matrix[int(tick/2-2)%32][12]=True
         
     ''' fill buttonmatrix with rawNoteData's informations '''
     def displayRawNoteData(self):
@@ -38,7 +47,8 @@ class MTKeyboard(MTButtonMatrix):
     located at x,y is pressed or not
     '''
     def on_press(self, *largs):
-        print largs[0]
+        if (largs[0][1]>11):
+            return
         
         if (largs[0][2] == 1):
             self.__rawNoteData[largs[0][0]][largs[0][1]] = Note.Note()
@@ -60,7 +70,7 @@ class NotesMatrix():
         self.keyboard = MTKeyboard(rawNoteData=self.sequence.getRawNoteData(),notesMatrix=self)
              
         ''' put matrix into a frame '''
-        self.innerwin = myMTInnerWindow(notesMatrix=self, size=(605,468), pos=(50,50))
+        self.innerwin = myMTInnerWindow(notesMatrix=self, size=(605,478), pos=(50,50))
         self.innerwin.add_widget(self.keyboard)
         
         w = getWindow()
