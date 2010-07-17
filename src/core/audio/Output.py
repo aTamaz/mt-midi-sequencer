@@ -12,7 +12,7 @@ class Output(threading.Thread): # Output runs in its own Thread
 
 	def __init__(self, **kwargs):
 		# logging on/off
-		kwargs.setdefault('logging', True)
+		kwargs.setdefault('logging', Constants.LOGGING_output)
 		self.__logging = kwargs.get('logging')
 
 		self.__log('initializing Output')
@@ -36,7 +36,7 @@ class Output(threading.Thread): # Output runs in its own Thread
 
 		self.__timestamp=0
 		self.__lastInstrument=-1
-		self.__volume=50
+		self.__volume=Constants.GLOBAL_START_VOLUME
 
 		#######################################
 		
@@ -131,6 +131,7 @@ class Output(threading.Thread): # Output runs in its own Thread
 				self.midi_out.write([[[status_off,note,velocity],self.__timestamp]])
 				self.__log('\t< note off\t' + str(note)) # LOG
 
+			self.__log("\t velocity \t"+str(velocity))
 			#self.__log('played notes: ' + str(self.__on_notes)) # LOG
 
 

@@ -11,6 +11,7 @@ from random import randint, random
 import random, time
 import core.audio.EventManager as EventManager
 import myButtonMatrix as ButtonMatrix
+import core.Constants as Constants
 
 IS_PYMT_PLUGIN = True
 PLUGIN_TITLE = 'Menu Music'
@@ -126,6 +127,8 @@ class MusicBubble(MTScatterImage):
         ''' TODO auswahl des instruments muss hier noch rein '''
         self.seq.setInstrument(kwargs.get('instrument'))
         
+        self.volume = Constants.SEQUENCE_START_VOLUME
+        
         # this is used to ensure that the on_touch_up handler just
         # executes one time. see on_touch_up event handler
         self.touch_up_oneTime = 0.0
@@ -148,7 +151,21 @@ class MusicBubble(MTScatterImage):
         
         #return same as super event handler to get normal manipulations
         return super(MusicBubble, self).on_touch_down(touch)
+    
+    def on_transform(self, angle, scale, trans, point):
+        if (self.volume < 20):
+            self.volume = 20
+            
+        self.volume = int(self.volume * scale)
         
+        if (self.volume > 127):
+            self.volume = 127
+            
+        if (self.volume < 0):
+            self.volume = 0
+            
+        self.seq.setVolume(self.volume)
+    
     def on_touch_up(self, touch):
         '''
         EventSystem dispatches this event some times twice per

@@ -34,6 +34,7 @@ class Sequence():
 		
 		self.instrument = 0
 		self.channel = 0
+		self.volume = Constants.SEQUENCE_START_VOLUME
 	
 		# this is used to send off events for all switched on notes and then die
 		self.__die_next_tick=False
@@ -73,6 +74,9 @@ class Sequence():
 			self.__rawNoteData.append([])
 			for j in xrange(12):
 				self.__rawNoteData[i].append(None)
+	
+	def setVolume(self,vol):
+		self.volume = int(vol)
 	
 	def getPlaydata(self):
 		return self.__playdata
@@ -137,7 +141,10 @@ class Sequence():
 			
 			# channel overwrite
 			item[1] = int(self.channel)
-			
+	
+			# velocity overwrite
+			item[3] = int(self.volume)
+					
 			note = item[2]
 			# refresh on notes so we know which do switch off when swtching this sequence off
 			if (self.__on_notes[note]):
